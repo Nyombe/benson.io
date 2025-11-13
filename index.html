@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nyombe Benson Jalle | Portfolio </title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="responsive.css">
-    <link rel="stylesheet" href="script.js">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -41,7 +40,7 @@
                 <a href="#contact" class="btn">Get In Touch</a>
             </div>
             <div class="hero-image">
-                <img src="images/5.jpg" alt="Benson's Photo">
+                <img src="Images/5.jpg" alt="Benson's Photo">
             </div>
         </div>
     </section>
@@ -82,194 +81,195 @@
         </div>
     </section>
 
-    <! Skills Section>
-        <section id="skills" class="skills">
-            <div class="container">
-                <h2 class="section-title">My Skills</h2>
-                <div class="skills-container">
-                    <div class="skill-category">
-                        <h3>Web Development</h3>
-                        <ul>
-                            <li>HTML5 & CSS3</li>
-                            <li>JavaScript (ES6+)</li>
-                            <li>React.js</li>
-                            <li>Node.js</li>
-                            <li>PHP & MySQL</li>
-                            <li>Responsive Design</li>
-                            <li>Python</li>
-                        </ul>
-                    </div>
-                    <div class="skill-category">
-                        <h3>Graphic Design</h3>
-                        <ul>
-                            <li>Adobe Photoshop</li>
-                            <li>Adobe Illustrator</li>
-                            <li>Canva</li>
-                            <li>UI/UX Design</li>
-                            <li>Logo Design</li>
-                            <li>Brand Identity</li>
-                        </ul>
-                    </div>
-                    <div class="skill-category">
-                        <h3>Other Skills</h3>
-                        <ul>
-                            <li>Git & Version Control</li>
-                            <li>Web Hosting & Deployment</li>
-                            <li>Technical Writing</li>
-                            <li>Project Management</li>
-                            <li>Computer networks</li>
-                            <li>Artificial intelligence and machine learning </li>
-                        </ul>
-                    </div>
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <h2 class="section-title">My Skills</h2>
+            <div class="skills-container">
+                <div class="skill-category">
+                    <h3>Web Development</h3>
+                    <ul>
+                        <li>HTML5 & CSS3</li>
+                        <li>JavaScript (ES6+)</li>
+                        <li>React.js</li>
+                        <li>Node.js</li>
+                        <li>PHP & MySQL</li>
+                        <li>Responsive Design</li>
+                        <li>Python</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Graphic Design</h3>
+                    <ul>
+                        <li>Adobe Photoshop</li>
+                        <li>Adobe Illustrator</li>
+                        <li>Canva</li>
+                        <li>UI/UX Design</li>
+                        <li>Logo Design</li>
+                        <li>Brand Identity</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Other Skills</h3>
+                    <ul>
+                        <li>Git & Version Control</li>
+                        <li>Web Hosting & Deployment</li>
+                        <li>Technical Writing</li>
+                        <li>Project Management</li>
+                        <li>Computer networks</li>
+                        <li>Artificial intelligence and machine learning </li>
+                    </ul>
                 </div>
             </div>
-        </section>
-
-        <!-- Portfolio Section -->
-        <section id="portfolio" class="portfolio">
-            <div class="container">
-                <h2 class="section-title">My Work</h2>
-                <div class="portfolio-filter">
-                    <button class="filter-btn active" data-filter="all">All</button>
-                    <button class="filter-btn" data-filter="web">Web Development</button>
-                    <button class="filter-btn" data-filter="design">Graphic Design</button>
-                    <button class="filter-btn" data-filter="AI">AI projects</button>
-                </div>
-                <div class="portfolio-grid">
-                    <!-- Project 1 -->
-                    <div class="portfolio-item" data-category="web">
-                        <img src="images/11.jpg" alt="Web Project 1">
-                        <div class="portfolio-overlay">
-                            <h3>E-commerce Website</h3>
-                            <p>Full-stack e-commerce solution</p>
-                            <a href="#" class="btn">View Project</a>
-                        </div>
-                    </div>
-                    <!-- Project 2 -->
-                    <div class="portfolio-item" data-category="design">
-                        <img src="images/1.jpg" alt="Design Project 1">
-                        <div class="portfolio-overlay">
-                            <h3>Brand Identity</h3>
-                            <p>Logo and branding for a local business</p>
-                            <a href="#" class="btn">View Project</a>
-                        </div>
-                    </div>
-                    <!-- Project 3 -->
-                    <div class="portfolio-item" data-category="AI">
-                        <img src="images/6.jpg" alt="AI Project 1">
-                        <div class="portfolio-overlay">
-                            <h3>Graduation project</h3>
-                            <p>Class and graduation projects on AI</p>
-                            <a href="#" class="btn">View Project</a>
-                        </div>
-                    </div>
-                    <div class="portfolio-item" data-category="AI">
-                        <img src="images/6.jpg" alt="AI Project 1">
-                        <div class="portfolio-overlay">
-                            <h3>My portfolio</h3>
-                            <p>Portfolio Website</p>
-                            <a href="https://benbadang.github.io/benson.io" class="btn">View Project</a>
-                        </div>
-                    </div>
-                </div>
-        </section>
-        <!-- Book Section -->
-        <section id="book" class="book">
-            <div class="container book-card">
-                <div class="book-covers">
-                    <img class="book-cover front" src="images/front.jpeg" alt="SSCE History — front cover"
-                        loading="lazy">
-                    <img class="book-cover back" src="images/back.jpeg" alt="SSCE History — back cover" loading="lazy">
-                </div>
-
-                <div class="book-info">
-                    <h2 class="section-title">Books</h2>
-                    <div class="book-filter">
-                        <h3 class="book-title">SSCE History</h3>
-                        <!-- <p>Follow me on Facebook.</p> -->
-                        <button id="openBookModal" class="btn">Read Book</button>
-                    </div>
-                </div>
-        </section>
-
-        <!-- Book Modal (Follow-to-read) -->
-        <div id="bookModal" class="modal" aria-hidden="true">
-            <div class="modal-content">
-                <div class="modal-cover-wrap" aria-hidden="true">
-                    <img id="modalCover" src="images/front.jpeg" alt="Book cover" />
-                </div>
-                <button class="modal-close" id="closeBookModal">&times;</button>
-                <h3>Follow on Facebook to read</h3>
-                <p>Please Follow me on Facebook. After following, click "I followed" to open the book.</p>
-
-                <!-- Facebook Page Plugin -->
-                <div id="fb-root"></div>
-                <div class="fb-page" data-href="https://www.facebook.com/ben.son.366135" data-tabs="" data-width="340"
-                    data-height="130" data-small-header="false" data-adapt-container-width="true"
-                    data-hide-cover="false" data-show-facepile="true">
-                    <blockquote cite="https://www.facebook.com/ben.son.366135" class="fb-xfbml-parse-ignore">
-                        <a href="https://www.facebook.com/ben.son.366135">Follow</a>
-                    </blockquote>
-                </div>
-
-                <div class="modal-actions">
-                    <button id="confirmFollow" class="btn btn-secondary">I followed</button>
-                    <button id="readSample" class="btn btn-outline">Read sample</button>
-                    <button id="openFull" class="btn" style="display:none">Open full reader</button>
-                    <div id="bookViewer" class="book-viewer" style="display:none"></div>
-                </div>
-            </div>
-            <div class="modal-overlay" id="modalOverlay"></div>
         </div>
+    </section>
 
-        <!-- Facebook SDK (for Page Plugin) -->
-        <script async defer crossorigin="anonymous"
-            src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v16.0" nonce="FBSDK"></script>
-        <!-- Contact Section -->
-        <section id="contact" class="contact">
-            <div class="container">
-                <h2 class="section-title">Get In Touch</h2>
-                <div class="contact-container">
-                    <div class="contact-info">
-                        <h3>Contact Information</h3>
-                        <p><i class="fas fa-envelope"></i> jallebennie@gmail.com</p>
-                        <p><i class="fas fa-phone"></i> +211 928 530 446</p>
-                        <p><i class="fas fa-map-marker-alt"></i> Juba, South Sudan</p>
-                        <div class="social-links">
-                            <a href="https://github.com/BenBadang"><i class="fab fa-github"></i></a>
-                            <a href="https://www.linkedin.com/in/nyombe-benson-jalle-b2aa13"><i
-                                    class="fab fa-linkedin"></i></a>
-                            <a href="https://x.com/benniejalle?s=2"><i class="fab fa-x"></i></a>
-                            <a href="https://facebook.com/ben.son.366135"><i class="fab fa-facebook"></i></a>
-                        </div>
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <h2 class="section-title">My Work</h2>
+            <div class="portfolio-filter">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="web">Web Development</button>
+                <button class="filter-btn" data-filter="design">Graphic Design</button>
+                <button class="filter-btn" data-filter="AI">AI projects</button>
+            </div>
+            <div class="portfolio-grid">
+                <!-- Project 1 -->
+                <div class="portfolio-item" data-category="web">
+                    <img src="Images/11.jpg" alt="Web Project 1">
+                    <div class="portfolio-overlay">
+                        <h3>E-commerce Website</h3>
+                        <p>Full-stack e-commerce solution</p>
+                        <a href="#" class="btn">View Project</a>
                     </div>
-                    <form class="contact-form">
-                        <div class="form-group">
-                            <input type="text" placeholder="Your Name" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" placeholder="Your Email" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" placeholder="Subject">
-                        </div>
-                        <div class="form-group">
-                            <textarea placeholder="I would love to hear from you!" required></textarea>
-                        </div>
-                        <button type="submit" class="btn">Send Message</button>
-                    </form>
+                </div>
+                <!-- Project 2 -->
+                <div class="portfolio-item" data-category="design">
+                    <img src="Images/1.jpg" alt="Design Project 1">
+                    <div class="portfolio-overlay">
+                        <h3>Brand Identity</h3>
+                        <p>Logo and branding for a local business</p>
+                        <a href="#" class="btn">View Project</a>
+                    </div>
+                </div>
+                <!-- Project 3 -->
+                <div class="portfolio-item" data-category="AI">
+                    <img src="Images/6.jpg" alt="AI Project 1">
+                    <div class="portfolio-overlay">
+                        <h3>Graduation project</h3>
+                        <p>Class and graduation projects on AI</p>
+                        <a href="#" class="btn">View Project</a>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="AI">
+                    <img src="Images/6.jpg" alt="AI Project 1">
+                    <div class="portfolio-overlay">
+                        <h3>My portfolio</h3>
+                        <p>Portfolio Website</p>
+                        <a href="https://benbadang.github.io/benson.io" class="btn">View Project</a>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
+    <!-- Book Section -->
+    <section id="book" class="book">
+        <div class="container book-card">
+            <div class="book-covers">
+                <img class="book-cover front" src="Images/front.jpeg" alt="SSCE History — front cover" loading="lazy">
+                <img class="book-cover back" src="Images/back.jpeg" alt="SSCE History — back cover" loading="lazy">
+            </div>
 
-        <!Footer>
-            <footer>
-                <div class="container">
-                    <p>&copy; <span id="year"></span> @Benson. All Rights Reserved.</p>
+            <div class="book-info">
+                <h2 class="section-title">Books</h2>
+                <div class="book-filter">
+                    <h3 class="book-title">SSCE History</h3>
+                    <!-- <p>Follow me on Facebook.</p> -->
+                    <button id="openBookModal" class="btn">Read Book</button>
                 </div>
-            </footer>
+            </div>
+        </div>
+    </section>
 
-            <script src="js/script.js"></script>
+    <!-- Book Modal (Follow-to-read) -->
+    <div id="bookModal" class="modal" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-cover-wrap" aria-hidden="true">
+                <img id="modalCover" src="Images/front.jpeg" alt="Book cover" />
+            </div>
+            <button class="modal-close" id="closeBookModal">&times;</button>
+            <h3>Follow on Facebook to read</h3>
+            <p>Please Follow me on Facebook. After following, click "I followed" to open the book.</p>
+
+            <!-- Facebook Page Plugin -->
+            <div id="fb-root"></div>
+            <div class="fb-page" data-href="https://www.facebook.com/ben.son.366135" data-tabs="" data-width="340"
+                data-height="130" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false"
+                data-show-facepile="true">
+                <blockquote cite="https://www.facebook.com/ben.son.366135" class="fb-xfbml-parse-ignore">
+                    <a href="https://www.facebook.com/ben.son.366135">Follow</a>
+                </blockquote>
+            </div>
+
+            <div class="modal-actions">
+                <button id="confirmFollow" class="btn btn-secondary">I followed</button>
+                <button id="readSample" class="btn btn-outline">Read sample</button>
+                <button id="openFull" class="btn" style="display:none">Open full reader</button>
+                <div id="bookViewer" class="book-viewer" style="display:none"></div>
+            </div>
+        </div>
+        <div class="modal-overlay" id="modalOverlay"></div>
+    </div>
+
+    <!-- Facebook SDK (for Page Plugin) -->
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v16.0"
+        nonce="FBSDK"></script>
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    <p><i class="fas fa-envelope"></i> jallebennie@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> +211 928 530 446</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Juba, South Sudan</p>
+                    <div class="social-links">
+                        <a href="https://github.com/BenBadang"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/nyombe-benson-jalle-b2aa13"><i
+                                class="fab fa-linkedin"></i></a>
+                        <a href="https://x.com/benniejalle?s=2"><i class="fab fa-x"></i></a>
+                        <a href="https://facebook.com/ben.son.366135"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <input type="text" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Subject">
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="I would love to hear from you!" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="year"></span> @Benson. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
 </body>
 
 </html>
