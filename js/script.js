@@ -1,4 +1,15 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // ===== SMOOTH SCROLLING FOR NAVIGATION =====
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+
     // ===== FADE-IN ANIMATIONS ON SCROLL =====
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -11,6 +22,76 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.fade-in').forEach(el => {
         observer.observe(el);
     });
+
+    // Add fade-in class to teaching and project cards
+    document.querySelectorAll('.teaching-card, .project-card, .skill-path').forEach(el => {
+        el.classList.add('fade-in');
+    });
+
+    // ===== ACTIVE NAV UPDATE ON SCROLL =====
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    function updateActiveNav() {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 100;
+            const sectionHeight = section.clientHeight;
+            if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                current = section.getAttribute('id');
+            }
+        });
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    }
+
+    updateActiveNav();
+    window.addEventListener('scroll', updateActiveNav, { passive: true });
+
+    // ===== MOBILE MENU TOGGLE =====
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    if (menuToggle && navLinks) {
+        const toggleNav = () => {
+            const isActive = navLinks.classList.toggle('active');
+            menuToggle.setAttribute('aria-expanded', isActive);
+            if (isActive) {
+                const firstLink = navLinks.querySelector('a');
+                if (firstLink) firstLink.focus();
+            }
+        };
+
+        menuToggle.addEventListener('click', toggleNav);
+        menuToggle.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleNav();
+            }
+        });
+
+        // Close menu with Escape
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                menuToggle.focus();
+            }
+        });
+
+        // Close menu when clicking nav links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function () {
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
+    }
 
     // Contact form submission (Formspree integration) + loading state
     const contactForm = document.querySelector('.contact-form');
