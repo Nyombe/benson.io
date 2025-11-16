@@ -153,6 +153,7 @@ header .container {
     font-size: 3rem;
     margin-bottom: 15px;
     color: var(--secondary-color);
+    font-weight: 700;
 }
 
 .hero-content h2 {
@@ -164,8 +165,33 @@ header .container {
 
 .hero-content p {
     font-size: 1.1rem;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     color: var(--text-light);
+}
+
+.achievement-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.achievement-highlights .highlight {
+    display: inline-block;
+    padding: 10px 18px;
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(52, 152, 219, 0.05));
+    border: 1px solid rgba(52, 152, 219, 0.2);
+    border-radius: 20px;
+    font-size: 0.95rem;
+    color: var(--secondary-color);
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.achievement-highlights .highlight:hover {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.2), rgba(52, 152, 219, 0.1));
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
 }
 
 .hero-image {
@@ -352,7 +378,7 @@ header .container {
 
 .social-links {
     display: flex;
-    gap: 20px;
+    gap: 25px;
     margin-top: 30px;
     flex-wrap: wrap;
     align-items: center;
@@ -363,108 +389,91 @@ header .container {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 55px;
-    height: 55px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
-    font-size: 1.4rem;
-    border: 2px solid #d0d0d0;
+    font-size: 1.5rem;
+    border: 2px solid #e0e0e0;
     background: white;
-    color: #666;
-    text-decoration: none;
-    flex-shrink: 0;
+    line-height: 1;
+    color: #999;
 }
 
-/* Consistent hover transform for all */
-.social-links a:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-}
-
-/* GitHub - Actual brand color */
+/* GitHub - Gray */
 .social-links a[href*="github.com"] {
-    border-color: #333;
-    color: #333;
+    color: #999;
 }
 
 .social-links a[href*="github.com"]:hover {
-    background: #333;
-    color: white;
+    border-color: #666;
+    color: #333;
+    transform: translateY(-5px);
 }
 
-/* LinkedIn - Actual brand blue */
+/* LinkedIn - Blue */
 .social-links a[href*="linkedin.com"] {
+    border-color: #999;
+    color: #1d1f20;
+}
+
+.social-links a[href*="linkedin.com"]:hover {
+    background: #1d1f20;
+    color: #999;
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 119, 181, 0.2);
+}
+
+/* X/Twitter - Gray */
+.social-links a[href*="x.com"],
+.social-links a[href*="x.com"] {
+    color: #999;
+}
+
+.social-links a[href*="x.com"]:hover,
+.social-links a[href*="x.com"]:hover {
+    border-color: #666;
+    color: #333;
+    transform: translateY(-5px);
+}
+
+/* Facebook - Blue */
+.social-links a[href*="facebook.com"] {
+    border-color: #999;
+    color: #1d1f20;
+}
+
+.social-links a[href*="facebook.com"]:hover {
+    background: #1d1f20;
+    color: white;
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(24, 119, 242, 0.2);
+}
+
+/* Instagram - Blue (if added) */
+.social-links a[href*="instagram.com"] {
     border-color: #0077b5;
     color: #0077b5;
 }
 
-.social-links a[href*="linkedin.com"]:hover {
+.social-links a[href*="instagram.com"]:hover {
     background: #0077b5;
     color: white;
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 119, 181, 0.2);
 }
 
-/* X/Twitter - Actual brand black */
-.social-links a[href*="x.com"],
-.social-links a[href*="twitter.com"] {
-    border-color: #000000;
-    color: #000000;
-}
-
-.social-links a[href*="x.com"]:hover,
-.social-links a[href*="twitter.com"]:hover {
-    background: #000000;
-    color: white;
-}
-
-/* Facebook - Actual brand blue */
-.social-links a[href*="facebook.com"] {
-    border-color: #1877f2;
-    color: #1877f2;
-}
-
-.social-links a[href*="facebook.com"]:hover {
-    background: #1877f2;
-    color: white;
-}
-
-/* Instagram - Gradient for actual brand */
-.social-links a[href*="instagram.com"] {
-    border: 2px solid transparent;
-    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888) border-box;
-    color: #dc2743;
-    position: relative;
-}
-
-.social-links a[href*="instagram.com"]::before {
-    content: '';
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    right: 2px;
-    bottom: 2px;
-    background: white;
-    border-radius: 50%;
-    z-index: -1;
-}
-
-.social-links a[href*="instagram.com"]:hover {
-    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-    color: white;
-}
-
-.social-links a[href*="instagram.com"]:hover::before {
-    opacity: 0;
-}
-
-/* YouTube - Actual brand red */
+/* YouTube - Red/Blue accent */
 .social-links a[href*="youtube.com"] {
-    border-color: #ff0000;
-    color: #ff0000;
+    border-color: #0077b5;
+    color: #0077b5;
 }
 
 .social-links a[href*="youtube.com"]:hover {
-    background: #ff0000;
+    background: #0077b5;
     color: white;
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 119, 181, 0.2);
 }
 
 .contact-form {
