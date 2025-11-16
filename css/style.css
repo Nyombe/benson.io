@@ -385,52 +385,454 @@ header .container {
     transform: scale(1.1);
 }
 
-/* Achievements Section */
-.achievements {
-    background: linear-gradient(135deg, #f5f7fa 0%, #f0f2f5 100%);
+/* ===== TEACHING SECTION STYLING ===== */
+.teaching-section {
+    padding: 80px 0;
+    background: #f8f9fa;
 }
 
-.achievements-timeline {
+.teaching-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
     margin-top: 40px;
 }
 
-.achievement-card {
+.teaching-card {
     background: white;
     padding: 30px;
-    border-radius: 15px;
+    border-radius: 12px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-    text-align: center;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
+    border-left: 4px solid var(--primary-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.achievement-card:hover {
-    transform: translateY(-8px);
-    border-color: var(--primary-color);
-    box-shadow: 0 15px 40px rgba(52, 152, 219, 0.15);
+.teaching-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
 }
 
-.achievement-icon {
-    font-size: 3rem;
-    margin-bottom: 15px;
-    display: block;
-}
-
-.achievement-card h3 {
+.teaching-card h3 {
     color: var(--secondary-color);
-    font-size: 1.3rem;
-    margin-bottom: 12px;
-    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
 }
 
-.achievement-card p {
+.teaching-card p {
+    color: var(--text-light);
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.skill-tag {
+    background: #e9ecef;
+    color: #495057;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.skill-tag:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* ===== TIMELINE STYLING ===== */
+.timeline-section {
+    padding: 80px 0;
+}
+
+.timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 40px auto 0;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 30px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--primary-color);
+}
+
+.timeline-item {
+    display: flex;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.timeline-date {
+    min-width: 120px;
+    font-weight: 600;
+    color: var(--primary-color);
+    padding-right: 30px;
+    text-align: right;
+    font-size: 0.95rem;
+}
+
+.timeline-content {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+    margin-left: 30px;
+    flex: 1;
+    border-left: 3px solid var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.timeline-content:hover {
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+.timeline-content h3 {
+    color: var(--secondary-color);
+    margin-bottom: 8px;
+    font-size: 1.15rem;
+}
+
+.timeline-content p {
     color: var(--text-light);
     font-size: 0.95rem;
     line-height: 1.6;
 }
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 26px;
+    top: 8px;
+    width: 12px;
+    height: 12px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 0 3px var(--primary-color);
+    z-index: 1;
+}
+
+/* ===== PROJECT CARDS STYLING ===== */
+.projects-section {
+    padding: 80px 0;
+}
+
+.project-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    border-top: 4px solid;
+    transition: all 0.3s ease;
+    border-left: 5px solid;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+}
+
+.research-project {
+    border-top-color: #e74c3c;
+    border-left-color: #e74c3c;
+}
+
+.ml-project {
+    border-top-color: #9b59b6;
+    border-left-color: #9b59b6;
+}
+
+.web-project {
+    border-top-color: #3498db;
+    border-left-color: #3498db;
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.project-card h3 {
+    color: var(--secondary-color);
+    font-size: 1.4rem;
+    margin: 0;
+}
+
+.project-type {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.research-project .project-type {
+    background: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+}
+
+.ml-project .project-type {
+    background: rgba(155, 89, 182, 0.1);
+    color: #9b59b6;
+}
+
+.web-project .project-type {
+    background: rgba(52, 152, 219, 0.1);
+    color: #3498db;
+}
+
+.project-subtitle {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    margin: 10px 0 20px 0;
+    font-style: italic;
+}
+
+.project-achievements {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.project-achievements li {
+    padding: 10px 0;
+    padding-left: 30px;
+    position: relative;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.project-achievements li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #27ae60;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.tech-stack span {
+    background: #f8f9fa;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--secondary-color);
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.tech-stack span:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* ===== SKILLS ROADMAP STYLING ===== */
+.skills-roadmap {
+    padding: 80px 0;
+    background: #f8f9fa;
+}
+
+.skill-path {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+    border-top: 4px solid #28a745;
+    transition: all 0.3s ease;
+}
+
+.skill-path:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.skill-path h3 {
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+}
+
+.skill-path ul {
+    list-style: none;
+    padding: 0;
+}
+
+.skill-path li {
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f3f4;
+    position: relative;
+    padding-left: 25px;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.skill-path li:last-child {
+    border-bottom: none;
+}
+
+.skill-path li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.skill-path strong {
+    color: var(--secondary-color);
+}
+
+/* ===== SECTION GENERAL STYLING ===== */
+.section {
+    padding: 80px 0;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 50px;
+    font-size: 2.5rem;
+    color: var(--secondary-color);
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: var(--primary-color);
+    margin: 15px auto;
+}
+
+/* ===== HERO ACHIEVEMENT HIGHLIGHTS ===== */
+.achievement-highlights {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.achievement-highlights span {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.achievement-highlights span:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+    .teaching-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .timeline::before {
+        left: 20px;
+    }
+
+    .timeline-date {
+        min-width: 100px;
+        font-size: 0.85rem;
+        padding-right: 15px;
+    }
+
+    .timeline-content {
+        margin-left: 20px;
+        padding: 20px;
+    }
+
+    .timeline-item::before {
+        left: 16px;
+    }
+
+    .project-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .project-card h3 {
+        font-size: 1.2rem;
+    }
+
+    .achievement-highlights {
+        gap: 10px;
+    }
+
+    .achievement-highlights span {
+        font-size: 0.85rem;
+        padding: 8px 15px;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        margin-bottom: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .achievement-highlights span {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+
+    .skill-tags {
+        gap: 6px;
+    }
+
+    .skill-tag {
+        font-size: 0.8rem;
+        padding: 4px 10px;
+    }
+
+    .tech-stack {
+        gap: 8px;
+    }
+
+    .tech-stack span {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+}
+
+/* ===== EXISTING SECTION RESETS ===== -->
 
 /* Contact Section -->
 .contact-container {
