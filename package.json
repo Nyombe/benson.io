@@ -1,0 +1,21 @@
+{
+    "name": "portfolio-screenshots",
+    "version": "1.0.0",
+    "description": "Automated screenshot capture for portfolio website using Puppeteer",
+    "main": "screenshot.js",
+    "scripts": {
+        "screenshots": "node screenshot.js",
+        "screenshots:local": "BASE_URL=http://localhost:8000 node screenshot.js"
+    },
+    "keywords": [
+        "puppeteer",
+        "screenshots",
+        "automation",
+        "testing"
+    ],
+    "author": "Nyombe Benson Jalle",
+    "license": "MIT",
+    "devDependencies": {
+        "puppeteer": "^21.0.0"
+    }
+}
