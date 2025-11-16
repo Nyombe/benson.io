@@ -169,6 +169,35 @@ header .container {
     color: var(--text-light);
 }
 
+.hero-cta {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.hero-cta .btn {
+    flex: 0 1 auto;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--secondary-color);
+}
+
+.btn-secondary {
+    background: var(--accent-color);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #c0392b;
+}
+
 .achievement-highlights {
     display: flex;
     flex-wrap: wrap;
@@ -220,6 +249,17 @@ header .container {
     margin-bottom: 20px;
 }
 
+.about-cta {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.about-cta .btn {
+    flex: 0 1 auto;
+}
+
 .about-skills {
     flex: 1;
     background: white;
@@ -244,7 +284,8 @@ header .container {
 
 /* Skills Section */
 .skills-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
     margin-top: 40px;
 }
@@ -344,7 +385,54 @@ header .container {
     transform: scale(1.1);
 }
 
-/* Contact Section */
+/* Achievements Section */
+.achievements {
+    background: linear-gradient(135deg, #f5f7fa 0%, #f0f2f5 100%);
+}
+
+.achievements-timeline {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.achievement-card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.achievement-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary-color);
+    box-shadow: 0 15px 40px rgba(52, 152, 219, 0.15);
+}
+
+.achievement-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.achievement-card h3 {
+    color: var(--secondary-color);
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.achievement-card p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Contact Section -->
 .contact-container {
     display: flex;
     gap: 50px;
