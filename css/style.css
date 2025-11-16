@@ -352,7 +352,7 @@ header .container {
 
 .social-links {
     display: flex;
-    gap: 20px;
+    gap: 25px;
     margin-top: 30px;
     flex-wrap: wrap;
     align-items: center;
@@ -363,14 +363,15 @@ header .container {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 55px;
-    height: 55px;
-    color: white;
+    width: 60px;
+    height: 60px;
+    color: inherit;
     border-radius: 50%;
     transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
-    font-size: 1.4rem;
-    border: 2px solid;
+    font-size: 1.5rem;
+    border: 3px solid;
     background: white;
+    line-height: 1;
 }
 
 /* GitHub */
@@ -380,7 +381,7 @@ header .container {
 }
 
 .social-links a[href*="github.com"]:hover {
-    background: linear-gradient(135deg, #181717, #333);
+    background: #181717;
     color: white;
     transform: translateY(-5px) scale(1.1);
     box-shadow: 0 8px 25px rgba(24, 23, 23, 0.3);
@@ -393,7 +394,7 @@ header .container {
 }
 
 .social-links a[href*="linkedin.com"]:hover {
-    background: linear-gradient(135deg, #0077b5, #0056a4);
+    background: #0077b5;
     color: white;
     transform: translateY(-5px) scale(1.1);
     box-shadow: 0 8px 25px rgba(0, 119, 181, 0.3);
@@ -421,7 +422,7 @@ header .container {
 }
 
 .social-links a[href*="facebook.com"]:hover {
-    background: linear-gradient(135deg, #1877f2, #0a66c2);
+    background: #1877f2;
     color: white;
     transform: translateY(-5px) scale(1.1);
     box-shadow: 0 8px 25px rgba(24, 119, 242, 0.3);
