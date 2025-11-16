@@ -12,34 +12,64 @@ document.addEventListener('DOMContentLoaded', function () {
         observer.observe(el);
     });
 
-    // Contact form submission (Formspree integration)
+    // Contact form submission (Formspree integration) + loading state
     const contactForm = document.querySelector('.contact-form');
     if (contactForm) {
         contactForm.addEventListener('submit', function (e) {
-            // Form submits directly to Formspree via action attribute
-            // No additional JS needed; Formspree handles email delivery to YOUR_FORMSPREE_ID
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.classList.add('btn-loading');
+                submitBtn.disabled = true;
+            }
+            // allow form to submit to Formspree normally
         });
     }
 
-    // Mobile menu toggle
+    // Mobile menu toggle (defensive)
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
-    menuToggle.addEventListener('click', function () {
-        navLinks.classList.toggle('active');
-    });
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', function () {
+            navLinks.classList.toggle('active');
+            menuToggle.setAttribute('aria-expanded', navLinks.classList.contains('active'));
+        });
+    }
 
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-
-            navLinks.classList.remove('active');
-
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
+            const target = document.querySelector(this.getAttribute('href'));
+            if (!target) return;
+            // close mobile nav if open
+            if (navLinks && navLinks.classList.contains('active')) navLinks.classList.remove('active');
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
     });
+
+    // Active nav update on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navAnchors = document.querySelectorAll('.nav-link, .nav-links a');
+
+    function updateActiveNav() {
+        let current = '';
+        sections.forEach(section => {
+            const rect = section.getBoundingClientRect();
+            if (rect.top <= 120 && rect.bottom >= 120) {
+                current = section.getAttribute('id');
+            }
+        });
+        navAnchors.forEach(link => {
+            link.classList.remove('active');
+            try {
+                const href = link.getAttribute('href') || '';
+                if (href === `#${current}`) link.classList.add('active');
+            } catch (e) {}
+        });
+    }
+
+    updateActiveNav();
+    window.addEventListener('scroll', updateActiveNav, { passive: true });
 
     // Portfolio filtering
     const filterButtons = document.querySelectorAll('.filter-btn');
