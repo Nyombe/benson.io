@@ -352,7 +352,7 @@ header .container {
 
 .social-links {
     display: flex;
-    gap: 25px;
+    gap: 20px;
     margin-top: 30px;
     flex-wrap: wrap;
     align-items: center;
@@ -363,31 +363,36 @@ header .container {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 60px;
-    height: 60px;
-    color: inherit;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
     transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
-    font-size: 1.5rem;
-    border: 3px solid;
+    font-size: 1.4rem;
+    border: 2px solid #d0d0d0;
     background: white;
-    line-height: 1;
+    color: #666;
+    text-decoration: none;
+    flex-shrink: 0;
 }
 
-/* GitHub */
+/* Consistent hover transform for all */
+.social-links a:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* GitHub - Actual brand color */
 .social-links a[href*="github.com"] {
-    border-color: #181717;
-    color: #181717;
+    border-color: #333;
+    color: #333;
 }
 
 .social-links a[href*="github.com"]:hover {
-    background: #181717;
+    background: #333;
     color: white;
-    transform: translateY(-5px) scale(1.1);
-    box-shadow: 0 8px 25px rgba(24, 23, 23, 0.3);
 }
 
-/* LinkedIn */
+/* LinkedIn - Actual brand blue */
 .social-links a[href*="linkedin.com"] {
     border-color: #0077b5;
     color: #0077b5;
@@ -396,11 +401,9 @@ header .container {
 .social-links a[href*="linkedin.com"]:hover {
     background: #0077b5;
     color: white;
-    transform: translateY(-5px) scale(1.1);
-    box-shadow: 0 8px 25px rgba(0, 119, 181, 0.3);
 }
 
-/* X/Twitter */
+/* X/Twitter - Actual brand black */
 .social-links a[href*="x.com"],
 .social-links a[href*="twitter.com"] {
     border-color: #000000;
@@ -411,11 +414,9 @@ header .container {
 .social-links a[href*="twitter.com"]:hover {
     background: #000000;
     color: white;
-    transform: translateY(-5px) scale(1.1);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
-/* Facebook */
+/* Facebook - Actual brand blue */
 .social-links a[href*="facebook.com"] {
     border-color: #1877f2;
     color: #1877f2;
@@ -424,8 +425,46 @@ header .container {
 .social-links a[href*="facebook.com"]:hover {
     background: #1877f2;
     color: white;
-    transform: translateY(-5px) scale(1.1);
-    box-shadow: 0 8px 25px rgba(24, 119, 242, 0.3);
+}
+
+/* Instagram - Gradient for actual brand */
+.social-links a[href*="instagram.com"] {
+    border: 2px solid transparent;
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888) border-box;
+    color: #dc2743;
+    position: relative;
+}
+
+.social-links a[href*="instagram.com"]::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    background: white;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.social-links a[href*="instagram.com"]:hover {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    color: white;
+}
+
+.social-links a[href*="instagram.com"]:hover::before {
+    opacity: 0;
+}
+
+/* YouTube - Actual brand red */
+.social-links a[href*="youtube.com"] {
+    border-color: #ff0000;
+    color: #ff0000;
+}
+
+.social-links a[href*="youtube.com"]:hover {
+    background: #ff0000;
+    color: white;
 }
 
 .contact-form {
