@@ -2194,3 +2194,49 @@ footer p {
         font-size: 0.9rem;
     }
 }
+
+/* === High-specificity navbar override (force inline nav, remove bullets) === */
+/* Placed near end to override other rules; uses !important to beat competing rules */
+.navbar,
+header .navbar {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.navbar .navbar-nav,
+header .navbar-nav,
+.navbar-nav {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 24px !important;
+    align-items: center !important;
+}
+
+.navbar .navbar-nav .nav-item,
+.navbar-nav .nav-item {
+    margin-left: 0 !important;
+}
+
+.navbar .navbar-nav .nav-link,
+.navbar-nav .nav-link,
+.nav-link {
+    display: inline-block !important;
+    padding: 6px 8px !important;
+    color: var(--text-color) !important;
+    text-decoration: none !important;
+}
+
+/* Ensure collapse shows as block on mobile when .show applied */
+.navbar-collapse.show {
+    display: block !important;
+}
+
+/* Fallback for unexpected list-style from other libraries */
+.navbar ul,
+.navbar-nav ul {
+    list-style: none !important;
+    padding-left: 0 !important;
+}
