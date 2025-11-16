@@ -40,7 +40,7 @@
         });
         navLinks.forEach(link => {
             link.classList.remove('active');
-            if (link.getAttribute('href') === #) {
+            if (link.getAttribute('href') === `#${current}`) {
                 link.classList.add('active');
             }
         });
@@ -123,7 +123,7 @@ const openFullBtn = document.getElementById('openFull');
 const bookViewer = document.getElementById('bookViewer');
 
 const DRIVE_FILE_ID = '1pjtHwYUsCkpk8rvSAo2Dx6jFtZa8JBLg';
-const drivePreview = (id) => https://drive.google.com/file/d//preview;
+const drivePreview = (id) => `https://drive.google.com/file/d/${id}/preview`;
 
 function showIframe(url, height = 600) {
     if (!bookViewer) return;
@@ -155,7 +155,7 @@ if (confirmFollowBtn) {
     confirmFollowBtn.addEventListener('click', function () {
         showIframe(drivePreview(DRIVE_FILE_ID), 800);
         bookViewer.classList.remove('sample');
-        confirmFollowBtn.textContent = 'Thank you  enjoy reading!';
+        confirmFollowBtn.textContent = 'Thank you — enjoy reading!';
         confirmFollowBtn.disabled = true;
         if (openFullBtn) openFullBtn.style.display = 'inline-block';
     });
