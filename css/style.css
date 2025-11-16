@@ -19,6 +19,10 @@
     /* Text */
     --text-color: #222831;
     --text-muted: #6c757d;
+    /* Backwards-compatible aliases used across styles */
+    --primary-color: var(--primary-blue);
+    --secondary-color: var(--primary-dark);
+    --accent-color: var(--accent-green);
 
     /* Spacing */
     --space-xs: 0.5rem;
@@ -53,7 +57,7 @@ body {
     line-height: 1.6;
     color: var(--text-color);
     background-color: #f9f9f9;
-    padding-top: 80px;
+    padding-top: 80px !important;
 }
 
 .container {
@@ -132,6 +136,90 @@ header {
     top: 0;
 }
 
+/* Top-level navbar rules (was accidentally nested — browsers ignore nested selectors) */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.navbar-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-nav .nav-item {
+    margin-left: 30px;
+}
+
+.navbar-nav .nav-link {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 600;
+    transition: color 0.25s var(--ease-default);
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--primary-blue);
+}
+
+.navbar-toggler {
+    display: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.navbar-toggler-icon {
+    display: inline-block;
+    width: 24px;
+    height: 2px;
+    background: var(--text-color);
+    position: relative;
+}
+
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--text-color);
+    position: absolute;
+    left: 0;
+}
+
+.navbar-toggler-icon::before {
+    top: -7px;
+}
+
+.navbar-toggler-icon::after {
+    top: 7px;
+}
+
+/* Header container layout fallback (kept for older markup) */
 header .container {
     display: flex;
     justify-content: space-between;
@@ -284,6 +372,33 @@ header.sticky {
     }
 
     .nav-links ul li {
+        margin-left: 0;
+    }
+
+    /* Navbar collapse for Bootstrap-like header */
+    .navbar-toggler {
+        display: inline-block;
+    }
+
+    .navbar-collapse {
+        display: none;
+        width: 100%;
+    }
+
+    .navbar-collapse.show {
+        display: block;
+        background: white;
+        padding: 18px;
+        box-shadow: var(--shadow-md);
+        border-radius: 0 0 var(--radius-md) var(--radius-md);
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .navbar-nav .nav-item {
         margin-left: 0;
     }
 }
