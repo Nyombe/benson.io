@@ -363,18 +363,60 @@ header .container {
     justify-content: center;
     width: 50px;
     height: 50px;
-    background: linear-gradient(135deg, var(--primary-color), #2980b9);
     color: white;
     border-radius: 12px;
     transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
-    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
     font-size: 1.3rem;
 }
 
-.social-links a:hover {
-    background: linear-gradient(135deg, #2980b9, var(--secondary-color));
+/* GitHub */
+.social-links a[href*="github.com"] {
+    background: linear-gradient(135deg, #181717, #333);
+    box-shadow: 0 4px 15px rgba(24, 23, 23, 0.3);
+}
+
+.social-links a[href*="github.com"]:hover {
+    background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
     transform: translateY(-5px) scale(1.1);
-    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.5);
+    box-shadow: 0 8px 25px rgba(24, 23, 23, 0.5);
+}
+
+/* LinkedIn */
+.social-links a[href*="linkedin.com"] {
+    background: linear-gradient(135deg, #0077b5, #0056a4);
+    box-shadow: 0 4px 15px rgba(0, 119, 181, 0.3);
+}
+
+.social-links a[href*="linkedin.com"]:hover {
+    background: linear-gradient(135deg, #004c8f, #003d6b);
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 119, 181, 0.5);
+}
+
+/* X/Twitter */
+.social-links a[href*="x.com"],
+.social-links a[href*="twitter.com"] {
+    background: linear-gradient(135deg, #000000, #1a1a1a);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.social-links a[href*="x.com"]:hover,
+.social-links a[href*="twitter.com"]:hover {
+    background: linear-gradient(135deg, #1a1a1a, #333);
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+/* Facebook */
+.social-links a[href*="facebook.com"] {
+    background: linear-gradient(135deg, #1877f2, #0a66c2);
+    box-shadow: 0 4px 15px rgba(24, 119, 242, 0.3);
+}
+
+.social-links a[href*="facebook.com"]:hover {
+    background: linear-gradient(135deg, #0a66c2, #054b9e);
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 8px 25px rgba(24, 119, 242, 0.5);
 }
 
 .contact-form {
