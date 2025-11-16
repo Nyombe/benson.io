@@ -29,9 +29,35 @@ document.addEventListener('DOMContentLoaded', function () {
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
     if (menuToggle && navLinks) {
+        const toggleNav = () => {
+            const isActive = navLinks.classList.toggle('active');
+            menuToggle.setAttribute('aria-expanded', isActive);
+            if (isActive) {
+                // focus first link for better keyboard flow
+                const firstLink = navLinks.querySelector('a');
+                if (firstLink) firstLink.focus();
+            }
+        };
+
         menuToggle.addEventListener('click', function () {
-            navLinks.classList.toggle('active');
-            menuToggle.setAttribute('aria-expanded', navLinks.classList.contains('active'));
+            toggleNav();
+        });
+
+        // keyboard support: Enter or Space to toggle
+        menuToggle.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleNav();
+            }
+        });
+
+        // Close mobile nav with Escape
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                menuToggle.focus();
+            }
         });
     }
 
@@ -41,8 +67,11 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (!target) return;
-            // close mobile nav if open
-            if (navLinks && navLinks.classList.contains('active')) navLinks.classList.remove('active');
+            // close mobile nav if open and update aria state
+            if (navLinks && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
+            }
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
     });
