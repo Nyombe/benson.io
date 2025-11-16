@@ -212,6 +212,28 @@ header .container {
     border-radius: 2px;
 }
 
+/* Ensure nav-links anchors (without .nav-link class) get active styles too */
+.nav-links a.active {
+    color: var(--primary-blue);
+    font-weight: 600;
+}
+
+.nav-links a.active::after {
+    content: '';
+    display: block;
+    height: 2px;
+    background: var(--primary-blue);
+    margin-top: 6px;
+    width: 100%;
+}
+
+/* Visible sticky header style when scrolled */
+header.sticky {
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: var(--shadow-md);
+    backdrop-filter: blur(6px);
+}
+
 /* Mobile menu collapse */
 @media (max-width: 768px) {
     .menu-toggle {

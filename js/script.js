@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
             try {
                 const href = link.getAttribute('href') || '';
                 if (href === `#${current}`) link.classList.add('active');
-            } catch (e) {}
+            } catch (e) { }
         });
     }
 
