@@ -4,7 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Nyombe Benson Jalle - IT Graduate, Teaching Fellow, and Full-Stack Developer specializing in ML research and urban growth prediction.">
+    <meta name="keywords" content="Nyombe Benson Jalle, Portfolio, IT Graduate, Full-Stack Developer, Machine Learning, South Sudan, Juba">
+    <meta property="og:title" content="Nyombe Benson Jalle | IT Graduate & Developer">
+    <meta property="og:description" content="Explore the journey of an IT researcher and developer bridging the gap between education and technology.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/png" href="Images/favicon-logo.png">
     <title>Nyombe Benson Jalle | Portfolio </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,700&family=Inter:wght@400;600;700&family=Outfit:wght@700;800&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -28,6 +37,11 @@
                     <li class="nav-item"><a class="nav-link" href="#journey">Journey</a></li>
                     <li class="nav-item"><a class="nav-link" href="#future-skills">Skills Roadmap</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item theme-toggle-item">
+                        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -37,7 +51,7 @@
     <section id="home" class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1>From Classroom to Code</h1>
+                <h1><span class="hero-title-serif">From Class to </span><span class="hero-title-italic">Code</span></h1>
                 <h2>Bridging Education & Technology</h2>
                 <p>BSc Information Technology Graduate | Teaching Fellow | ML Researcher | Full-Stack Developer</p>
                 <div class="achievement-highlights">
@@ -48,7 +62,7 @@
                 </div>
                 <div class="hero-cta">
                     <a href="#projects" class="btn btn-primary">View Projects</a>
-                    <a href="assets/resume.pdf" class="btn btn-secondary" download>Download CV</a>
+                    <a href="assets/resume.pdf" class="btn btn-secondary" download>Technical Resume</a>
                     <a href="#contact" class="btn btn-outline">Contact Me</a>
                 </div>
             </div>
@@ -152,69 +166,59 @@
     <!-- Portfolio Section - Research & Projects -->
     <section id="projects" class="section projects-section">
         <div class="container">
-            <h2 class="section-title">Research & Projects</h2>
+            <h2 class="section-title">GitHub Portfolio</h2>
             <div class="projects-grid">
-                <!-- Urban Growth Prediction Project -->
-                <div class="project-card research-project fade-in">
-                    <div class="project-header">
-                        <h3>Urban Growth Prediction: Juba 2023-2044</h3>
-                        <span class="project-type">Research Project</span>
+                <!-- Featured: Achol Fashion Store -->
+                <div class="project-card featured-project fade-in">
+                    <div class="project-image-wrap">
+                        <img src="Images/achol-showcase.png" alt="Achol Fashion Store Showcase" class="project-img">
+                        <div class="project-overlay">
+                            <a href="https://github.com/Nyombe/Achol-Store" target="_blank" class="btn btn-sm">View Repository</a>
+                        </div>
                     </div>
-                    <p class="project-subtitle">Final Year Research Project | Data Analysis: 1993-2004</p>
-                    <ul class="project-achievements">
-                        <li>✓ Predictive modeling of urban expansion using historical geospatial data</li>
-                        <li>✓ GIS and spatial data processing for long-term urban planning</li>
-                        <li>✓ Data-driven insights for evidence-based development strategies</li>
-                    </ul>
+                    <div class="project-details">
+                        <div class="project-header">
+                            <h3>Achol Fashion Store</h3>
+                            <span class="project-tag"><i class="fab fa-github"></i> Django</span>
+                        </div>
+                        <p class="project-desc">A premium e-commerce platform built with Django, featuring product discovery, shopping cart, and secure checkout logic.</p>
+                        <div class="tech-stack">
+                            <span>Python</span>
+                            <span>Django</span>
+                            <span>PostgreSQL</span>
+                            <span>TailwindCSS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Urban Growth Prediction Project -->
+                <div class="project-card fade-in">
+                    <div class="project-header">
+                        <h3>Urban Growth Prediction: Juba</h3>
+                        <span class="project-tag"><i class="fab fa-github"></i> ML Research</span>
+                    </div>
+                    <p class="project-desc">Predictive modeling of urban expansion using historical geospatial data for evidence-based development strategies.</p>
                     <div class="tech-stack">
                         <span>Python</span>
-                        <span>Machine Learning</span>
-                        <span>Data Analysis</span>
+                        <span>ML</span>
                         <span>GIS Mapping</span>
-                        <span>Predictive Modeling</span>
                     </div>
+                    <a href="https://github.com/Nyombe/gradProjects" target="_blank" class="repo-link">View Project <i class="fas fa-external-link-alt"></i></a>
                 </div>
 
                 <!-- Fire Detection ML Project -->
-                <div class="project-card ml-project fade-in">
+                <div class="project-card fade-in">
                     <div class="project-header">
-                        <h3>Fire Detection ML Project</h3>
-                        <span class="project-type">Computer Vision</span>
+                        <h3>Fire Detection System</h3>
+                        <span class="project-tag"><i class="fab fa-github"></i> Computer Vision</span>
                     </div>
-                    <p class="project-subtitle">Advanced ML Application for Public Safety</p>
-                    <ul class="project-achievements">
-                        <li>✓ Image classification for early fire detection and prevention</li>
-                        <li>✓ Real-time monitoring system with detection capabilities</li>
-                        <li>✓ Public safety-focused AI solution with practical applications</li>
-                    </ul>
+                    <p class="project-desc">Real-time image classification for early fire detection, utilizing deep learning and computer vision techniques.</p>
                     <div class="tech-stack">
-                        <span>Computer Vision</span>
-                        <span>Python</span>
-                        <span>TensorFlow/PyTorch</span>
-                        <span>Image Processing</span>
-                        <span>Deep Learning</span>
+                        <span>TensorFlow</span>
+                        <span>OpenCV</span>
+                        <span>CNN</span>
                     </div>
-                </div>
-
-                <!-- Django E-commerce Project -->
-                <div class="project-card web-project fade-in">
-                    <div class="project-header">
-                        <h3>Local Store E-commerce Platform</h3>
-                        <span class="project-type">Full-Stack Development</span>
-                    </div>
-                    <p class="project-subtitle">Production-Ready Django Solution for Business</p>
-                    <ul class="project-achievements">
-                        <li>✓ Complete e-commerce platform using Django framework and modern web technologies</li>
-                        <li>✓ Real-world business problem solving with scalable architecture</li>
-                        <li>✓ Full-stack development with database integration and admin management</li>
-                    </ul>
-                    <div class="tech-stack">
-                        <span>Django</span>
-                        <span>Python</span>
-                        <span>Database Design</span>
-                        <span>Full-Stack</span>
-                        <span>Business Solutions</span>
-                    </div>
+                    <a href="https://github.com/Nyombe/Fire-Detection" target="_blank" class="repo-link">View Project <i class="fas fa-external-link-alt"></i></a>
                 </div>
             </div>
         </div>
@@ -252,60 +256,68 @@
                     </ul>
                 </div>
             </div>
+        </div>
     </section>
 
-    <!-- Book Section -->
-    <section id="book" class="book">
-        <div class="container book-card">
-            <div class="book-covers">
-                <img class="book-cover front" src="Images/front.jpeg" alt="SSCE History — front cover" loading="lazy">
-                <img class="book-cover back" src="Images/back.jpeg" alt="SSCE History — back cover" loading="lazy">
-            </div>
-
-            <div class="book-info">
-                <h2 class="section-title">Books</h2>
-                <div class="book-filter">
-                    <h3 class="book-title">SSCE History</h3>
-                    <!-- <p>Follow me on Facebook.</p> -->
-                    <button id="openBookModal" class="btn">Read Book</button>
+    <!-- Book Showcase Section -->
+    <section id="book" class="section book-showcase">
+        <div class="container">
+            <div class="showcase-grid">
+                <div class="showcase-visual fade-in">
+                    <div class="book-mockup">
+                        <img class="book-cover front" src="Images/front.jpeg" alt="SSCE History — front cover" loading="lazy">
+                        <div class="book-spine"></div>
+                    </div>
+                </div>
+                <div class="showcase-info fade-in">
+                    <span class="badge">Education Series</span>
+                    <h2 class="section-title text-left">SSCE History</h2>
+                    <h3 class="showcase-subtitle">New Syllabus | South Sudan Secondary Education</h3>
+                    <p class="showcase-description">
+                        An essential educational resource designed to help students master history concepts through 
+                        structured learning and data-driven insights. Bridging the gap between traditional history 
+                        curriculum and modern educational standards.
+                    </p>
+                    <div class="showcase-features">
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Comprehensive Syllabus Coverage</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Exam-Ready Analysis</span>
+                        </div>
+                    </div>
+                    <div class="showcase-cta">
+                        <button id="openBookModal" class="btn btn-primary btn-sm">Read Sample</button>
+                        <div class="showcase-socials">
+                            <a href="https://wa.me/211928530446" target="_blank" class="social-btn whatsapp" title="Contact on WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                            <a href="https://facebook.com/ben.son.366135" target="_blank" class="social-btn facebook" title="Contact on Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Book Modal (Follow-to-read) -->
+    <!-- Book Modal -->
     <div id="bookModal" class="modal" aria-hidden="true">
-        <div class="modal-content">
-            <div class="modal-cover-wrap" aria-hidden="true">
-                <img id="modalCover" src="Images/front.jpeg" alt="Book cover" />
-            </div>
+        <div class="modal-content modal-sm">
             <button class="modal-close" id="closeBookModal">&times;</button>
-            <h3>Follow on Facebook to read</h3>
-            <p>Please Follow me on Facebook. After following, click "I followed" to open the book.</p>
-
-            <!-- Facebook Page Plugin -->
-            <div id="fb-root"></div>
-            <div class="fb-page" data-href="https://www.facebook.com/ben.son.366135" data-tabs="" data-width="340"
-                data-height="130" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false"
-                data-show-facepile="true">
-                <blockquote cite="https://www.facebook.com/ben.son.366135" class="fb-xfbml-parse-ignore">
-                    <a href="https://www.facebook.com/ben.son.366135">Follow</a>
-                </blockquote>
-            </div>
-
+            <h3>Preview: SSCE History</h3>
+            <div id="bookViewer" class="book-viewer"></div>
             <div class="modal-actions">
-                <button id="confirmFollow" class="btn btn-secondary">I followed</button>
-                <button id="readSample" class="btn btn-outline">Read sample</button>
-                <button id="openFull" class="btn" style="display:none">Open full reader</button>
-                <div id="bookViewer" class="book-viewer" style="display:none"></div>
+                <button id="openFull" class="btn btn-primary btn-sm" style="display:none">Open Full Reader</button>
             </div>
         </div>
         <div class="modal-overlay" id="modalOverlay"></div>
     </div>
 
-    <!-- Facebook SDK (for Page Plugin) -->
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v16.0"
-        nonce="FBSDK"></script>
+
     <!-- Contact Section -->
     <section id="contact" class="contact">
         <div class="container">
@@ -354,6 +366,11 @@
             <p>&copy; <span id="year"></span> @Benson. All Rights Reserved.</p>
         </div>
     </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <script src="js/script.js"></script>
 </body>
