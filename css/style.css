@@ -303,8 +303,13 @@ section {
     transform: rotate(15deg);
 }
 
+/* Light mode: show moon icon */
+.theme-toggle i { font-family: "Font Awesome 6 Free"; font-weight: 900; }
+.theme-toggle i::before { content: "\f186"; } /* fa-moon */
+
+/* Dark mode: switch to sun icon */
 :root[data-theme='dark'] .theme-toggle i::before {
-    content: "\f185"; /* Sun icon */
+    content: "\f185"; /* fa-sun */
 }
 
 /* Back to Top */

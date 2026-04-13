@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // CLOSE MOBILE MENU ON CLICK OUTSIDE
     document.addEventListener('click', function (event) {
+        if (!navbarToggler || !navbarNav) return;
         const isClickInside = navbarToggler.contains(event.target) || navbarNav.contains(event.target);
         if (!isClickInside && navbarNav.classList.contains('show')) {
             navbarNav.classList.remove('show');
@@ -129,6 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // BACK TO TOP logic
     const backToTopBtn = document.getElementById('back-to-top');
     window.addEventListener('scroll', function () {
+        if (!backToTopBtn) return;
         if (window.scrollY > 500) {
             backToTopBtn.classList.add('show');
         } else {
