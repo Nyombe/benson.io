@@ -454,7 +454,7 @@ header {
     content: '';
     position: absolute;
     inset: -6px;
-    border-radius: 26px;
+    border-radius: 50%;
     background: linear-gradient(135deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.08) 100%);
     z-index: 0;
     animation: framePulse 4s ease-in-out infinite;
@@ -468,11 +468,11 @@ header {
 .hero-image img {
     position: relative;
     z-index: 1;
-    width: 300px;
-    height: 360px;
+    width: 320px;
+    height: 320px;
     object-fit: cover;
     object-position: center top;
-    border-radius: 20px;
+    border-radius: 50%;
     border: 4px solid rgba(255, 255, 255, 0.55);
     box-shadow:
         0 0 0 1px rgba(255,255,255,0.15),
@@ -519,6 +519,7 @@ header {
     font-style: italic;
     display: inline;
     letter-spacing: -1px;
+    font-size: 1.15em;
     /* Gold shimmer matching the reference image */
     background: linear-gradient(135deg, #d4af37 0%, #f5e27a 40%, #c9922a 80%, #f5e27a 100%);
     -webkit-background-clip: text;
