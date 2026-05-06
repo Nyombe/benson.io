@@ -177,6 +177,119 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     if (closeBookModalBtn) closeBookModalBtn.addEventListener('click', closeModal);
     if (modalOverlay) modalOverlay.addEventListener('click', closeModal);
+
+    // TECH NEWS FETCHING
+    const newsGrid = document.getElementById('news-grid');
+    const newsError = document.getElementById('news-error');
+    const NEWS_CACHE_KEY = 'tech_news_cache';
+    const CACHE_DURATION = 1000 * 60 * 60; // 1 hour
+
+    async function fetchTechNews() {
+        try {
+            // Check cache first
+            const cachedData = sessionStorage.getItem(NEWS_CACHE_KEY);
+            if (cachedData) {
+                const { timestamp, articles } = JSON.parse(cachedData);
+                if (Date.now() - timestamp < CACHE_DURATION) {
+                    renderNews(articles);
+                    return;
+                }
+            }
+
+            // Fetch from API (RSS to JSON)
+            const rssUrl = 'https://news.google.com/rss/search?q=technology&hl=en-US&gl=US&ceid=US:en';
+            const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`);
+            
+            if (!response.ok) throw new Error('Network response was not ok');
+            
+            const data = await response.json();
+            if (data.status !== 'ok') throw new Error('API returned error');
+
+            const articles = data.items.slice(0, 6).map(item => ({
+                title: item.title,
+                link: item.link,
+                pubDate: new Date(item.pubDate).toLocaleDateString(),
+                description: item.description.replace(/<[^>]*>?/gm, '').substring(0, 150) + '...', // Strip HTML
+                thumbnail: item.thumbnail || 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=400', // Fallback image
+                source: item.author || 'Tech News'
+            }));
+
+            // Store in cache
+            sessionStorage.setItem(NEWS_CACHE_KEY, JSON.stringify({
+                timestamp: Date.now(),
+                articles
+            }));
+
+            renderNews(articles);
+        } catch (error) {
+            console.error('Error fetching news:', error);
+            if (newsGrid) newsGrid.style.display = 'none';
+            if (newsError) newsError.style.display = 'block';
+        }
+    }
+
+    function renderNews(articles) {
+        if (!newsGrid) return;
+        newsGrid.innerHTML = ''; // Remove skeletons
+
+        articles.forEach(article => {
+            const card = document.createElement('div');
+            card.className = 'news-card fade-in';
+            
+            // Securely build the card using element properties to avoid XSS
+            const imgWrap = document.createElement('div');
+            imgWrap.className = 'news-img-wrap';
+            const img = document.createElement('img');
+            img.src = article.thumbnail;
+            img.alt = article.title;
+            img.className = 'news-img';
+            img.loading = 'lazy';
+            imgWrap.appendChild(img);
+
+            const content = document.createElement('div');
+            content.className = 'news-content';
+
+            const meta = document.createElement('div');
+            meta.className = 'news-meta';
+            const source = document.createElement('span');
+            source.textContent = article.source;
+            const date = document.createElement('span');
+            date.textContent = article.pubDate;
+            meta.appendChild(source);
+            meta.appendChild(date);
+
+            const title = document.createElement('h3');
+            title.className = 'news-title';
+            title.textContent = article.title;
+
+            const desc = document.createElement('p');
+            desc.className = 'news-desc';
+            desc.textContent = article.description;
+
+            const link = document.createElement('a');
+            link.href = article.link;
+            link.className = 'news-link';
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.innerHTML = 'Read Article <i class="fas fa-arrow-right"></i>';
+
+            content.appendChild(meta);
+            content.appendChild(title);
+            content.appendChild(desc);
+            content.appendChild(link);
+
+            card.appendChild(imgWrap);
+            card.appendChild(content);
+            
+            newsGrid.appendChild(card);
+            
+            // Re-observe for animation
+            if (observer) observer.observe(card);
+        });
+    }
+
+    // Initialize fetch
+    fetchTechNews();
 });
 
 // BOOK VIEWER (outside DOMContentLoaded with null checks)

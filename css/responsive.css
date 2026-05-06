@@ -13,12 +13,14 @@
 
     .about-content,
     .skills-container,
-    .contact-container {
+    .contact-container,
+    .news-grid {
         flex-direction: column;
     }
 
-    .portfolio-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    .portfolio-grid,
+    .news-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     }
 }
 

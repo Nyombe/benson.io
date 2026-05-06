@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Marks Management - Benson.io</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .app-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            border: 1px solid var(--gray-100);
+        }
+        .app-header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .app-header h2 { margin: 0; font-family: 'Outfit', sans-serif; }
+        .app-content { padding: 30px; }
+        .view { display: none; }
+        .view.active { display: block; }
+
+        /* Login */
+        .login-box { max-width: 400px; margin: 0 auto; padding: 40px 0; }
+        .login-box .form-group { margin-bottom: 20px; }
+        .login-box .btn { width: 100%; }
+
+        /* Dashboard elements */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .dash-card {
+            background: var(--gray-50);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-200);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .dash-card:hover { border-color: var(--primary-blue); transform: translateY(-3px); }
+        .dash-card h3 { margin-top: 0; color: var(--secondary-color); }
+        
+        /* Table styles */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--gray-200); }
+        th { background: var(--gray-50); font-weight: 600; color: var(--text-muted); }
+        
+        .mark-input {
+            width: 80px;
+            padding: 8px;
+            border: 1px solid var(--gray-200);
+            border-radius: 4px;
+        }
+        .edit-badge {
+            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background: var(--gray-100);
+            color: var(--text-muted);
+            margin-left: 10px;
+        }
+        .edit-badge.warning { background: #fff3cd; color: #856404; }
+        .edit-badge.danger { background: #f8d7da; color: #721c24; }
+
+        .btn-small { padding: 6px 12px; font-size: 0.9rem; }
+        .header-actions { display: flex; gap: 10px; align-items: center; }
+        .user-info { font-size: 0.9rem; opacity: 0.9; }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body data-theme="light">
+    <!-- Quick Nav back to portfolio -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="position: sticky;">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="app-container">
+            <div class="app-header">
+                <h2><i class="fas fa-graduation-cap"></i> Student Marks Portal</h2>
+                <div class="header-actions" id="headerActions" style="display: none;">
+                    <span class="user-info" id="userInfo"></span>
+                    <button class="btn btn-outline btn-small" onclick="App.logout()" style="border-color: white; color: white;">Logout</button>
+                </div>
+            </div>
+            <div class="app-content">
+                <!-- Login View -->
+                <div id="view-login" class="view active">
+                    <div class="login-box">
+                        <h3 class="section-title" style="font-size: 1.8rem; margin-bottom: 30px;">Sign In</h3>
+                        <div id="loginError" style="color: red; margin-bottom: 15px; display: none;"></div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="email" class="form-control" placeholder="teacher@school.io" value="math@school.io">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="password" class="form-control" value="math123">
+                        </div>
+                        <button class="btn btn-primary" onclick="App.login()">Login</button>
+                        <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">
+                            <strong>Demo Accounts:</strong><br>
+                            Admin: admin@school.io / admin123<br>
+                            Teacher: math@school.io / math123
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Admin Dashboard View -->
+                <div id="view-admin" class="view">
+                    <h3>Administrator Dashboard</h3>
+                    <p>Overview of all subjects and marks. (Read-only)</p>
+                    <div id="adminContent"></div>
+                </div>
+
+                <!-- Teacher Dashboard View -->
+                <div id="view-teacher" class="view">
+                    <h3>My Subjects</h3>
+                    <p>Select a subject to manage student marks.</p>
+                    <div class="dashboard-cards" id="teacherSubjects"></div>
+                </div>
+
+                <!-- Subject Marks View (Teacher) -->
+                <div id="view-subject" class="view">
+                    <a href="#" class="back-link" onclick="App.showView('view-teacher'); return false;"><i class="fas fa-chevron-left"></i> Back to Subjects</a>
+                    <h3 id="subjectTitle">Manage Marks</h3>
+                    <p>Edit limit: Maximum <span id="maxEdits"></span> edits per student mark.</p>
+                    <div id="saveError" style="color: red; margin-bottom: 15px; display: none;"></div>
+                    <div id="saveSuccess" style="color: green; margin-bottom: 15px; display: none;"></div>
+                    <table id="marksTable">
+                        <thead>
+                            <tr>
+                                <th>Roll No</th>
+                                <th>Student Name</th>
+                                <th>Class</th>
+                                <th>Score (out of 100)</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load backend logic -->
+    <script src="js/marks.js"></script>
+    <script>
+        const App = {
+            session: null,
+            currentSubjectId: null,
+
+            init() {
+                document.getElementById('maxEdits').textContent = window.MAX_EDITS;
+                this.checkSession();
+            },
+
+            checkSession() {
+                this.session = AuthService.getSession();
+                if (this.session) {
+                    document.getElementById('headerActions').style.display = 'flex';
+                    document.getElementById('userInfo').textContent = this.session.name + ' (' + this.session.role + ')';
+                    if (this.session.role === 'admin') {
+                        this.loadAdminDashboard();
+                    } else {
+                        this.loadTeacherDashboard();
+                    }
+                } else {
+                    document.getElementById('headerActions').style.display = 'none';
+                    this.showView('view-login');
+                }
+            },
+
+            login() {
+                const e = document.getElementById('email').value;
+                const p = document.getElementById('password').value;
+                const err = document.getElementById('loginError');
+                try {
+                    AuthService.login(e, p);
+                    err.style.display = 'none';
+                    this.checkSession();
+                } catch(error) {
+                    err.textContent = error.message;
+                    err.style.display = 'block';
+                }
+            },
+
+            logout() {
+                AuthService.logout();
+                this.checkSession();
+            },
+
+            showView(id) {
+                document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+                document.getElementById(id).classList.add('active');
+                document.getElementById('saveError').style.display = 'none';
+                document.getElementById('saveSuccess').style.display = 'none';
+            },
+
+            // --- Admin Views ---
+            loadAdminDashboard() {
+                this.showView('view-admin');
+                const subjects = MarksService.getSubjects();
+                const allMarks = MarksService.getAllMarks();
+                const students = MarksService.getStudents();
+                
+                let html = '';
+                subjects.forEach(sub => {
+                    html += `<div style="margin-bottom: 40px;">
+                        <h4 style="border-bottom: 2px solid var(--primary-blue); padding-bottom: 10px;">${sub.name} (${sub.code})</h4>
+                        <table>
+                            <tr><th>Student</th><th>Score</th><th>Teacher Updates</th></tr>`;
+                    
+                    const subMarks = allMarks.filter(m => m.subjectId === sub.id);
+                    if (subMarks.length === 0) {
+                        html += `<tr><td colspan="3" style="text-align:center;">No marks recorded yet.</td></tr>`;
+                    } else {
+                        subMarks.forEach(m => {
+                            const st = students.find(s => s.id === m.studentId);
+                            html += `<tr>
+                                <td>${st ? st.name : 'Unknown'}</td>
+                                <td><strong>${m.score}</strong> / ${m.maxScore}</td>
+                                <td><span class="edit-badge">Edits: ${m.editCount}</span></td>
+                            </tr>`;
+                        });
+                    }
+                    html += `</table></div>`;
+                });
+                document.getElementById('adminContent').innerHTML = html;
+            },
+
+            // --- Teacher Views ---
+            loadTeacherDashboard() {
+                this.showView('view-teacher');
+                const subjects = MarksService.getMySubjects();
+                const container = document.getElementById('teacherSubjects');
+                container.innerHTML = '';
+                
+                subjects.forEach(sub => {
+                    const card = document.createElement('div');
+                    card.className = 'dash-card';
+                    card.innerHTML = `<h3>${sub.name}</h3><p>Code: ${sub.code}</p><button class="btn btn-primary btn-small">Manage Marks</button>`;
+                    card.onclick = () => this.loadSubjectMarks(sub.id, sub.name);
+                    container.appendChild(card);
+                });
+            },
+
+            loadSubjectMarks(subjectId, subjectName) {
+                this.currentSubjectId = subjectId;
+                document.getElementById('subjectTitle').textContent = 'Marks: ' + subjectName;
+                this.showView('view-subject');
+                
+                const students = MarksService.getStudents();
+                const tbody = document.querySelector('#marksTable tbody');
+                tbody.innerHTML = '';
+
+                students.forEach(st => {
+                    const mark = MarksService.findMark(st.id, subjectId);
+                    const editsLeft = MarksService.editsRemaining(mark);
+                    const locked = mark && editsLeft === 0;
+                    
+                    let badgeClass = '';
+                    if (editsLeft === 1) badgeClass = 'warning';
+                    if (editsLeft === 0) badgeClass = 'danger';
+
+                    const scoreVal = mark ? mark.score : '';
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${st.rollNumber}</td>
+                        <td>${st.name}</td>
+                        <td>${st.class}</td>
+                        <td>
+                            <input type="number" id="score_${st.id}" class="mark-input" value="${scoreVal}" min="0" max="100" ${locked ? 'disabled' : ''}>
+                        </td>
+                        <td>
+                            ${mark ? `<span class="edit-badge ${badgeClass}">${editsLeft} edits left</span>` : '<span class="edit-badge">Not entered</span>'}
+                        </td>
+                        <td>
+                            <button class="btn btn-primary btn-small" ${locked ? 'disabled' : ''} onclick="App.saveMark('${st.id}', '${mark ? mark.id : ''}')">
+                                ${mark ? 'Update' : 'Save'}
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            },
+
+            saveMark(studentId, existingMarkId) {
+                const input = document.getElementById(`score_${studentId}`);
+                const score = input.value;
+                const err = document.getElementById('saveError');
+                const suc = document.getElementById('saveSuccess');
+                err.style.display = 'none';
+                suc.style.display = 'none';
+
+                if (score === '') {
+                    err.textContent = "Please enter a valid score.";
+                    err.style.display = 'block';
+                    return;
+                }
+
+                try {
+                    if (existingMarkId) {
+                        MarksService.editMark(existingMarkId, score);
+                        suc.textContent = "Mark updated successfully!";
+                    } else {
+                        MarksService.addMark({
+                            studentId: studentId,
+                            subjectId: this.currentSubjectId,
+                            score: score
+                        });
+                        suc.textContent = "Mark added successfully!";
+                    }
+                    suc.style.display = 'block';
+                    // Reload table
+                    const subjectName = document.getElementById('subjectTitle').textContent.replace('Marks: ', '');
+                    this.loadSubjectMarks(this.currentSubjectId, subjectName);
+                } catch(error) {
+                    err.textContent = error.message;
+                    err.style.display = 'block';
+                }
+            }
+        };
+
+        // Boot
+        document.addEventListener('DOMContentLoaded', () => App.init());
+    </script>
+</body>
+</html>
