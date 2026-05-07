@@ -1,5 +1,5 @@
 /**
- * marks.js — Student Marks Management System
+ * marks.js — Result Management System (Student Marks)
  * Architecture: Service-layer pattern with localStorage data store.
  * All business rules (access control, edit limits, validation) are enforced
  * here so the UI cannot bypass them — mirroring a real backend API boundary.
