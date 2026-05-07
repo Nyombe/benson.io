@@ -218,8 +218,10 @@
             showView(id) {
                 document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
                 document.getElementById(id).classList.add('active');
-                document.getElementById('saveError').style.display = 'none';
-                document.getElementById('saveSuccess').style.display = 'none';
+                const err = document.getElementById('saveError');
+                const suc = document.getElementById('saveSuccess');
+                if (err) err.style.display = 'none';
+                if (suc) suc.style.display = 'none';
             },
 
             // --- Admin Views ---
