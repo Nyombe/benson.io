@@ -14,13 +14,24 @@ const AuthService = {
 
     async login(email, password) {
         try {
-            const userCredential = await auth.signInWithEmailAndPassword(email, password);
+            let userCredential;
+            try {
+                // Try to sign in first
+                userCredential = await auth.signInWithEmailAndPassword(email, password);
+            } catch (signInError) {
+                // If user not found, try to create account (helper for first login)
+                if (signInError.code === 'auth/user-not-found' || signInError.code === 'auth/invalid-credential') {
+                    userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                } else {
+                    throw signInError;
+                }
+            }
+
             const userDoc = await db.collection('users').doc(userCredential.user.uid).get();
             
             if (!userDoc.exists) {
-                // First time setup: If no user profile exists, create a default one for the first login
-                // This is a helper for the user to get started.
-                const role = email.includes('admin') ? 'admin' : 'teacher';
+                // Setup user profile
+                const role = email.toLowerCase().includes('admin') ? 'admin' : 'teacher';
                 const profile = {
                     name: email.split('@')[0],
                     email: email,
