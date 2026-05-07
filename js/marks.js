@@ -95,12 +95,12 @@ const Store = {
 
     const defaultAvatar = 'https://ui-avatars.com/api/?background=random&color=fff&name=';
     const students = [
-      { id: 'st1', name: 'Ayen Deng',       rollNumber: '001', class: 'Form 4A', photo: defaultAvatar + 'Ayen+Deng' },
-      { id: 'st2', name: 'Lual Garang',     rollNumber: '002', class: 'Form 4A', photo: defaultAvatar + 'Lual+Garang' },
-      { id: 'st3', name: 'Nyakim Kuol',     rollNumber: '003', class: 'Form 4A', photo: defaultAvatar + 'Nyakim+Kuol' },
-      { id: 'st4', name: 'Machar Dut',      rollNumber: '004', class: 'Form 4A', photo: defaultAvatar + 'Machar+Dut' },
-      { id: 'st5', name: 'Achol Maker',     rollNumber: '005', class: 'Form 4A', photo: defaultAvatar + 'Achol+Maker' },
-      { id: 'st6', name: 'Deng Mabior',     rollNumber: '006', class: 'Form 4A', photo: defaultAvatar + 'Deng+Mabior' },
+      { id: 'st1', name: 'Ayen Deng',       rollNumber: '001', class: 'Form 4A', photo: defaultAvatar + 'Ayen+Deng', sex: 'Female' },
+      { id: 'st2', name: 'Lual Garang',     rollNumber: '002', class: 'Form 4A', photo: defaultAvatar + 'Lual+Garang', sex: 'Male' },
+      { id: 'st3', name: 'Nyakim Kuol',     rollNumber: '003', class: 'Form 4A', photo: defaultAvatar + 'Nyakim+Kuol', sex: 'Female' },
+      { id: 'st4', name: 'Machar Dut',      rollNumber: '004', class: 'Form 4A', photo: defaultAvatar + 'Machar+Dut', sex: 'Male' },
+      { id: 'st5', name: 'Achol Maker',     rollNumber: '005', class: 'Form 4A', photo: defaultAvatar + 'Achol+Maker', sex: 'Female' },
+      { id: 'st6', name: 'Deng Mabior',     rollNumber: '006', class: 'Form 4A', photo: defaultAvatar + 'Deng+Mabior', sex: 'Male' },
     ];
 
     // Seed some initial marks
@@ -322,9 +322,9 @@ const MarksService = {
    * Add a new student to the system.
    * Requires Admin role.
    */
-  addStudent({ name, rollNumber, className, photo }) {
+  addStudent({ name, rollNumber, className, photo, sex }) {
     AuthService.requireAdmin();
-    if (!name || !rollNumber || !className) throw new Error('Name, roll number, and class are required.');
+    if (!name || !rollNumber || !className || !sex) throw new Error('Name, roll number, class, and sex are required.');
 
     Store.load();
     const db = Store.get();
@@ -337,11 +337,36 @@ const MarksService = {
       name, 
       rollNumber, 
       class: className,
+      sex,
       photo: photo || `https://ui-avatars.com/api/?background=random&color=fff&name=${encodeURIComponent(name)}`
     };
     db.students.push(student);
     Store.save();
     return student;
+  },
+
+  /**
+   * Delete a subject and all associated marks.
+   */
+  deleteSubject(subjectId) {
+    AuthService.requireAdmin();
+    Store.load();
+    const db = Store.get();
+    db.subjects = db.subjects.filter(s => s.id !== subjectId);
+    db.marks    = db.marks.filter(m => m.subjectId !== subjectId);
+    Store.save();
+  },
+
+  /**
+   * Delete a student and all associated marks.
+   */
+  deleteStudent(studentId) {
+    AuthService.requireAdmin();
+    Store.load();
+    const db = Store.get();
+    db.students = db.students.filter(s => s.id !== studentId);
+    db.marks    = db.marks.filter(m => m.studentId !== studentId);
+    Store.save();
   },
 
   /**

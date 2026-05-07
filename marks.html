@@ -137,6 +137,17 @@
             display: flex;
             align-items: center;
         }
+        .student-info-cell {
+            display: flex;
+            align-items: center;
+        }
+
+        @media print {
+            body * { visibility: hidden; }
+            #printArea, #printArea * { visibility: visible; }
+            #printArea { position: absolute; left: 0; top: 0; width: 100%; }
+            .btn, .navbar, .admin-tabs, .form-row, .back-link { display: none !important; }
+        }
     </style>
 </head>
 <body data-theme="light">
@@ -189,7 +200,10 @@
                     </div>
 
                     <div id="admin-overview" class="admin-section active">
-                        <p>Overview of all subjects and marks. (Read-only)</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <p>Overview of all subjects and marks. (Read-only)</p>
+                            <button class="btn btn-outline btn-small" onclick="App.printResults()"><i class="fas fa-print"></i> Print All Results</button>
+                        </div>
                         <div id="adminContent"></div>
                     </div>
 
@@ -215,7 +229,7 @@
                         </div>
                         <h4>Current Subjects</h4>
                         <table id="subjectsTable">
-                            <thead><tr><th>Name</th><th>Code</th></tr></thead>
+                            <thead><tr><th>Name</th><th>Code</th><th>Action</th></tr></thead>
                             <tbody></tbody>
                         </table>
                     </div>
@@ -237,6 +251,13 @@
                                 <input type="text" id="newStudentClass" class="form-control" placeholder="e.g. Form 4B">
                             </div>
                             <div class="form-group">
+                                <label>Sex</label>
+                                <select id="newStudentSex" class="form-control">
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label>Student Photo</label>
                                 <input type="file" id="newStudentPhoto" class="form-control" accept="image/*" style="padding: 8px;">
                             </div>
@@ -246,7 +267,7 @@
                         </div>
                         <h4>Current Students</h4>
                         <table id="studentsTable">
-                            <thead><tr><th>Photo</th><th>Roll No</th><th>Name</th><th>Class</th></tr></thead>
+                            <thead><tr><th>Photo</th><th>Roll No</th><th>Name</th><th>Sex</th><th>Class</th><th>Action</th></tr></thead>
                             <tbody></tbody>
                         </table>
                     </div>
@@ -394,7 +415,16 @@
             renderAdminSubjects() {
                 const subjects = MarksService.getSubjects();
                 const tbody = document.querySelector('#subjectsTable tbody');
-                tbody.innerHTML = subjects.map(s => `<tr><td>${s.name}</td><td>${s.code}</td></tr>`).join('');
+                tbody.innerHTML = subjects.map(s => `
+                    <tr>
+                        <td>${s.name}</td>
+                        <td>${s.code}</td>
+                        <td>
+                            <button class="btn btn-outline btn-small" style="color:red; border-color:red;" onclick="App.deleteSubject('${s.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>`).join('');
 
                 // Load teachers for assignment
                 const teachers = MarksService.getTeachers();
@@ -410,8 +440,30 @@
                         <td><img src="${s.photo}" class="student-thumb" alt=""></td>
                         <td>${s.rollNumber}</td>
                         <td>${s.name}</td>
+                        <td>${s.sex}</td>
                         <td>${s.class}</td>
+                        <td>
+                            <button class="btn btn-outline btn-small" style="color:red; border-color:red;" onclick="App.deleteStudent('${s.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
                     </tr>`).join('');
+            },
+
+            deleteSubject(id) {
+                if (confirm('Are you sure? This will delete the subject and ALL recorded marks for it.')) {
+                    MarksService.deleteSubject(id);
+                    this.renderAdminSubjects();
+                    this.renderAdminOverview();
+                }
+            },
+
+            deleteStudent(id) {
+                if (confirm('Are you sure? This will delete the student and ALL their marks.')) {
+                    MarksService.deleteStudent(id);
+                    this.renderAdminStudents();
+                    this.renderAdminOverview();
+                }
             },
 
             addSubject() {
@@ -441,6 +493,7 @@
                 const name = document.getElementById('newStudentName').value;
                 const rollNumber = document.getElementById('newStudentRoll').value;
                 const className = document.getElementById('newStudentClass').value;
+                const sex = document.getElementById('newStudentSex').value;
                 const fileInput = document.getElementById('newStudentPhoto');
                 const err = document.getElementById('studentError');
 
@@ -450,7 +503,7 @@
                 }
 
                 try {
-                    MarksService.addStudent({ name, rollNumber, className, photo });
+                    MarksService.addStudent({ name, rollNumber, className, photo, sex });
                     err.style.display = 'none';
                     // Reset inputs
                     document.getElementById('newStudentName').value = '';
@@ -463,6 +516,54 @@
                     err.textContent = e.message;
                     err.style.display = 'block';
                 }
+            },
+
+            printResults() {
+                const students = MarksService.getStudents();
+                const subjects = MarksService.getSubjects();
+                const allMarks = MarksService.getAllMarks();
+
+                let printHtml = `<div id="printArea">
+                    <h2 style="text-align:center;">Student Result Sheet</h2>
+                    <p style="text-align:center; color: #666;">Generated on ${new Date().toLocaleDateString()}</p>
+                    <table border="1" style="width:100%; border-collapse:collapse; margin-top:20px;">
+                        <thead>
+                            <tr>
+                                <th style="padding:10px;">Roll No</th>
+                                <th style="padding:10px;">Student Name</th>
+                                <th style="padding:10px;">Sex</th>
+                                <th style="padding:10px;">Results (Subject: Score)</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
+                students.forEach(st => {
+                    const stMarks = allMarks.filter(m => m.studentId === st.id);
+                    const marksStr = stMarks.map(m => {
+                        const sub = subjects.find(s => s.id === m.subjectId);
+                        return `${sub ? sub.name : 'Unknown'}: <strong>${m.score}</strong>`;
+                    }).join(', ') || 'No marks recorded';
+
+                    printHtml += `<tr>
+                        <td style="padding:10px;">${st.rollNumber}</td>
+                        <td style="padding:10px;">${st.name}</td>
+                        <td style="padding:10px;">${st.sex}</td>
+                        <td style="padding:10px;">${marksStr}</td>
+                    </tr>`;
+                });
+
+                printHtml += `</tbody></table></div>`;
+
+                // Create a hidden div for printing
+                const oldPrint = document.getElementById('printArea');
+                if (oldPrint) oldPrint.remove();
+                
+                const div = document.createElement('div');
+                div.innerHTML = printHtml;
+                document.body.appendChild(div);
+                
+                window.print();
+                div.remove();
             },
 
             toBase64(file) {
