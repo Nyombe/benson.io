@@ -297,6 +297,72 @@ const MarksService = {
     return db.marks.find(m => m.studentId === studentId && m.subjectId === subjectId) || null;
   },
 
+  /**
+   * Add a new subject to the system.
+   * Requires Admin role.
+   */
+  addSubject({ name, code }) {
+    AuthService.requireAdmin();
+    if (!name || !code) throw new Error('Subject name and code are required.');
+    
+    Store.load();
+    const db = Store.get();
+    if (db.subjects.find(s => s.code.toUpperCase() === code.toUpperCase())) {
+      throw new Error(`A subject with code ${code} already exists.`);
+    }
+
+    const subject = { id: 's' + (db.subjects.length + 1), name, code: code.toUpperCase() };
+    db.subjects.push(subject);
+    Store.save();
+    return subject;
+  },
+
+  /**
+   * Add a new student to the system.
+   * Requires Admin role.
+   */
+  addStudent({ name, rollNumber, className }) {
+    AuthService.requireAdmin();
+    if (!name || !rollNumber || !className) throw new Error('Name, roll number, and class are required.');
+
+    Store.load();
+    const db = Store.get();
+    if (db.students.find(s => s.rollNumber === rollNumber)) {
+      throw new Error(`A student with roll number ${rollNumber} already exists.`);
+    }
+
+    const student = { id: 'st' + (db.students.length + 1), name, rollNumber, class: className };
+    db.students.push(student);
+    Store.save();
+    return student;
+  },
+
+  /**
+   * Returns all teacher users.
+   * Requires Admin role.
+   */
+  getTeachers() {
+    AuthService.requireAdmin();
+    return Store.load().get().users.filter(u => u.role === 'teacher');
+  },
+
+  /**
+   * Assign a subject to a teacher.
+   * Requires Admin role.
+   */
+  assignTeacherToSubject(userId, subjectId) {
+    AuthService.requireAdmin();
+    Store.load();
+    const db = Store.get();
+    const user = db.users.find(u => u.id === userId);
+    if (!user) throw new Error('Teacher not found.');
+    if (!user.subjectIds.includes(subjectId)) {
+      user.subjectIds.push(subjectId);
+      Store.save();
+    }
+    return user;
+  },
+
   /** Returns remaining edits for a mark. */
   editsRemaining(mark) {
     return Math.max(0, MAX_EDITS - (mark ? mark.editCount : 0));

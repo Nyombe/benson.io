@@ -87,6 +87,42 @@
             font-weight: 600;
         }
         .back-link:hover { text-decoration: underline; }
+
+        /* Tabs */
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            border-bottom: 1px solid var(--gray-200);
+            padding-bottom: 0;
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .tab-btn.active {
+            color: var(--primary-blue);
+            border-bottom-color: var(--primary-blue);
+        }
+        .admin-section { display: none; padding-top: 20px; }
+        .admin-section.active { display: block; }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            background: var(--gray-50);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            margin-bottom: 30px;
+            border: 1px solid var(--gray-200);
+        }
     </style>
 </head>
 <body data-theme="light">
@@ -132,8 +168,70 @@
                 <!-- Admin Dashboard View -->
                 <div id="view-admin" class="view">
                     <h3>Administrator Dashboard</h3>
-                    <p>Overview of all subjects and marks. (Read-only)</p>
-                    <div id="adminContent"></div>
+                    <div class="admin-tabs">
+                        <button class="tab-btn active" onclick="App.switchAdminTab('overview')">Overview</button>
+                        <button class="tab-btn" onclick="App.switchAdminTab('subjects')">Manage Subjects</button>
+                        <button class="tab-btn" onclick="App.switchAdminTab('students')">Manage Students</button>
+                    </div>
+
+                    <div id="admin-overview" class="admin-section active">
+                        <p>Overview of all subjects and marks. (Read-only)</p>
+                        <div id="adminContent"></div>
+                    </div>
+
+                    <div id="admin-subjects" class="admin-section">
+                        <h4>Add New Subject</h4>
+                        <div id="subjectError" style="color: red; display: none; margin-bottom: 10px;"></div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Subject Name</label>
+                                <input type="text" id="newSubjectName" class="form-control" placeholder="e.g. Physics">
+                            </div>
+                            <div class="form-group">
+                                <label>Subject Code</label>
+                                <input type="text" id="newSubjectCode" class="form-control" placeholder="e.g. PHY">
+                            </div>
+                            <div class="form-group">
+                                <label>Assign Teacher</label>
+                                <select id="assignTeacher" class="form-control"></select>
+                            </div>
+                            <div class="form-group" style="display: flex; align-items: flex-end;">
+                                <button class="btn btn-primary" onclick="App.addSubject()">Add Subject</button>
+                            </div>
+                        </div>
+                        <h4>Current Subjects</h4>
+                        <table id="subjectsTable">
+                            <thead><tr><th>Name</th><th>Code</th></tr></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <div id="admin-students" class="admin-section">
+                        <h4>Add New Student</h4>
+                        <div id="studentError" style="color: red; display: none; margin-bottom: 10px;"></div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="newStudentName" class="form-control" placeholder="e.g. John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label>Roll Number</label>
+                                <input type="text" id="newStudentRoll" class="form-control" placeholder="e.g. 007">
+                            </div>
+                            <div class="form-group">
+                                <label>Class</label>
+                                <input type="text" id="newStudentClass" class="form-control" placeholder="e.g. Form 4B">
+                            </div>
+                            <div class="form-group" style="display: flex; align-items: flex-end;">
+                                <button class="btn btn-primary" onclick="App.addStudent()">Add Student</button>
+                            </div>
+                        </div>
+                        <h4>Current Students</h4>
+                        <table id="studentsTable">
+                            <thead><tr><th>Roll No</th><th>Name</th><th>Class</th></tr></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <!-- Teacher Dashboard View -->
@@ -224,9 +322,25 @@
                 if (suc) suc.style.display = 'none';
             },
 
+            switchAdminTab(tabId) {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+                
+                const btn = document.querySelector(`button[onclick*="${tabId}"]`);
+                if (btn) btn.classList.add('active');
+                document.getElementById(`admin-${tabId}`).classList.add('active');
+
+                if (tabId === 'subjects') this.renderAdminSubjects();
+                if (tabId === 'students') this.renderAdminStudents();
+            },
+
             // --- Admin Views ---
             loadAdminDashboard() {
                 this.showView('view-admin');
+                this.renderAdminOverview();
+            },
+
+            renderAdminOverview() {
                 const subjects = MarksService.getSubjects();
                 const allMarks = MarksService.getAllMarks();
                 const students = MarksService.getStudents();
@@ -254,6 +368,67 @@
                     html += `</table></div>`;
                 });
                 document.getElementById('adminContent').innerHTML = html;
+            },
+
+            renderAdminSubjects() {
+                const subjects = MarksService.getSubjects();
+                const tbody = document.querySelector('#subjectsTable tbody');
+                tbody.innerHTML = subjects.map(s => `<tr><td>${s.name}</td><td>${s.code}</td></tr>`).join('');
+
+                // Load teachers for assignment
+                const teachers = MarksService.getTeachers();
+                const select = document.getElementById('assignTeacher');
+                select.innerHTML = teachers.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+            },
+
+            renderAdminStudents() {
+                const students = MarksService.getStudents();
+                const tbody = document.querySelector('#studentsTable tbody');
+                tbody.innerHTML = students.map(s => `<tr><td>${s.rollNumber}</td><td>${s.name}</td><td>${s.class}</td></tr>`).join('');
+            },
+
+            addSubject() {
+                const name = document.getElementById('newSubjectName').value;
+                const code = document.getElementById('newSubjectCode').value;
+                const teacherId = document.getElementById('assignTeacher').value;
+                const err = document.getElementById('subjectError');
+
+                try {
+                    const sub = MarksService.addSubject({ name, code });
+                    if (teacherId) {
+                        MarksService.assignTeacherToSubject(teacherId, sub.id);
+                    }
+                    err.style.display = 'none';
+                    // Reset inputs
+                    document.getElementById('newSubjectName').value = '';
+                    document.getElementById('newSubjectCode').value = '';
+                    this.renderAdminSubjects();
+                    alert('Subject added successfully!');
+                } catch (e) {
+                    err.textContent = e.message;
+                    err.style.display = 'block';
+                }
+            },
+
+            addStudent() {
+                const name = document.getElementById('newStudentName').value;
+                const rollNumber = document.getElementById('newStudentRoll').value;
+                const className = document.getElementById('newStudentClass').value;
+                const err = document.getElementById('studentError');
+
+                try {
+                    MarksService.addStudent({ name, rollNumber, className });
+                    err.style.display = 'none';
+                    // Reset inputs
+                    document.getElementById('newStudentName').value = '';
+                    document.getElementById('newStudentRoll').value = '';
+                    document.getElementById('newStudentClass').value = '';
+                    this.renderAdminStudents();
+                    alert('Student added successfully!');
+                } catch (e) {
+                    err.textContent = e.message;
+                    err.style.display = 'block';
+                }
             },
 
             // --- Teacher Views ---
