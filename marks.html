@@ -7,6 +7,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDKs (Compat Version for simplicity) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnjj8AT3pSylLrqRbMFQXItU2AnDXiDqU",
+            authDomain: "result-management-system-1c7c7.firebaseapp.com",
+            projectId: "result-management-system-1c7c7",
+            storageBucket: "result-management-system-1c7c7.firebasestorage.app",
+            messagingSenderId: "899292194557",
+            appId: "1:899292194557:web:c0c7bca09e911b2885c094",
+            measurementId: "G-V9HXD1W8FD"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+    </script>
     <style>
         .app-container {
             max-width: 1000px;
@@ -312,13 +334,14 @@
             session: null,
             currentSubjectId: null,
 
-            init() {
+            async init() {
                 document.getElementById('maxEdits').textContent = window.MAX_EDITS;
+                // Wait for Firebase to check login status
+                this.session = await AuthService.checkAuthState();
                 this.checkSession();
             },
 
             checkSession() {
-                this.session = AuthService.getSession();
                 if (this.session) {
                     document.getElementById('headerActions').style.display = 'flex';
                     document.getElementById('userInfo').textContent = this.session.name + ' (' + this.session.role + ')';
@@ -333,12 +356,12 @@
                 }
             },
 
-            login() {
+            async login() {
                 const e = document.getElementById('email').value;
                 const p = document.getElementById('password').value;
                 const err = document.getElementById('loginError');
                 try {
-                    AuthService.login(e, p);
+                    this.session = await AuthService.login(e, p);
                     err.style.display = 'none';
                     this.checkSession();
                 } catch(error) {
@@ -347,8 +370,9 @@
                 }
             },
 
-            logout() {
-                AuthService.logout();
+            async logout() {
+                await AuthService.logout();
+                this.session = null;
                 this.checkSession();
             },
 
@@ -361,7 +385,7 @@
                 if (suc) suc.style.display = 'none';
             },
 
-            switchAdminTab(tabId) {
+            async switchAdminTab(tabId) {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
                 
@@ -369,20 +393,20 @@
                 if (btn) btn.classList.add('active');
                 document.getElementById(`admin-${tabId}`).classList.add('active');
 
-                if (tabId === 'subjects') this.renderAdminSubjects();
-                if (tabId === 'students') this.renderAdminStudents();
+                if (tabId === 'subjects') await this.renderAdminSubjects();
+                if (tabId === 'students') await this.renderAdminStudents();
             },
 
             // --- Admin Views ---
-            loadAdminDashboard() {
+            async loadAdminDashboard() {
                 this.showView('view-admin');
-                this.renderAdminOverview();
+                await this.renderAdminOverview();
             },
 
-            renderAdminOverview() {
-                const subjects = MarksService.getSubjects();
-                const allMarks = MarksService.getAllMarks();
-                const students = MarksService.getStudents();
+            async renderAdminOverview() {
+                const subjects = await MarksService.getSubjects();
+                const allMarks = await MarksService.getAllMarks();
+                const students = await MarksService.getStudents();
                 
                 let html = '';
                 subjects.forEach(sub => {
@@ -412,8 +436,8 @@
                 document.getElementById('adminContent').innerHTML = html;
             },
 
-            renderAdminSubjects() {
-                const subjects = MarksService.getSubjects();
+            async renderAdminSubjects() {
+                const subjects = await MarksService.getSubjects();
                 const tbody = document.querySelector('#subjectsTable tbody');
                 tbody.innerHTML = subjects.map(s => `
                     <tr>
@@ -426,14 +450,13 @@
                         </td>
                     </tr>`).join('');
 
-                // Load teachers for assignment
-                const teachers = MarksService.getTeachers();
+                const teachers = await MarksService.getTeachers();
                 const select = document.getElementById('assignTeacher');
                 select.innerHTML = teachers.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
             },
 
-            renderAdminStudents() {
-                const students = MarksService.getStudents();
+            async renderAdminStudents() {
+                const students = await MarksService.getStudents();
                 const tbody = document.querySelector('#studentsTable tbody');
                 tbody.innerHTML = students.map(s => `
                     <tr>
@@ -450,38 +473,37 @@
                     </tr>`).join('');
             },
 
-            deleteSubject(id) {
+            async deleteSubject(id) {
                 if (confirm('Are you sure? This will delete the subject and ALL recorded marks for it.')) {
-                    MarksService.deleteSubject(id);
-                    this.renderAdminSubjects();
-                    this.renderAdminOverview();
+                    await MarksService.deleteSubject(id);
+                    await this.renderAdminSubjects();
+                    await this.renderAdminOverview();
                 }
             },
 
-            deleteStudent(id) {
+            async deleteStudent(id) {
                 if (confirm('Are you sure? This will delete the student and ALL their marks.')) {
-                    MarksService.deleteStudent(id);
-                    this.renderAdminStudents();
-                    this.renderAdminOverview();
+                    await MarksService.deleteStudent(id);
+                    await this.renderAdminStudents();
+                    await this.renderAdminOverview();
                 }
             },
 
-            addSubject() {
+            async addSubject() {
                 const name = document.getElementById('newSubjectName').value;
                 const code = document.getElementById('newSubjectCode').value;
                 const teacherId = document.getElementById('assignTeacher').value;
                 const err = document.getElementById('subjectError');
 
                 try {
-                    const sub = MarksService.addSubject({ name, code });
+                    const sub = await MarksService.addSubject({ name, code });
                     if (teacherId) {
-                        MarksService.assignTeacherToSubject(teacherId, sub.id);
+                        await MarksService.assignTeacherToSubject(teacherId, sub.id);
                     }
                     err.style.display = 'none';
-                    // Reset inputs
                     document.getElementById('newSubjectName').value = '';
                     document.getElementById('newSubjectCode').value = '';
-                    this.renderAdminSubjects();
+                    await this.renderAdminSubjects();
                     alert('Subject added successfully!');
                 } catch (e) {
                     err.textContent = e.message;
@@ -503,14 +525,13 @@
                 }
 
                 try {
-                    MarksService.addStudent({ name, rollNumber, className, photo, sex });
+                    await MarksService.addStudent({ name, rollNumber, className, photo, sex });
                     err.style.display = 'none';
-                    // Reset inputs
                     document.getElementById('newStudentName').value = '';
                     document.getElementById('newStudentRoll').value = '';
                     document.getElementById('newStudentClass').value = '';
                     fileInput.value = '';
-                    this.renderAdminStudents();
+                    await this.renderAdminStudents();
                     alert('Student added successfully!');
                 } catch (e) {
                     err.textContent = e.message;
@@ -518,10 +539,10 @@
                 }
             },
 
-            printResults() {
-                const students = MarksService.getStudents();
-                const subjects = MarksService.getSubjects();
-                const allMarks = MarksService.getAllMarks();
+            async printResults() {
+                const students = await MarksService.getStudents();
+                const subjects = await MarksService.getSubjects();
+                const allMarks = await MarksService.getAllMarks();
 
                 let printHtml = `<div id="printArea">
                     <h2 style="text-align:center;">Student Result Sheet</h2>
@@ -554,7 +575,6 @@
 
                 printHtml += `</tbody></table></div>`;
 
-                // Create a hidden div for printing
                 const oldPrint = document.getElementById('printArea');
                 if (oldPrint) oldPrint.remove();
                 
@@ -576,9 +596,9 @@
             },
 
             // --- Teacher Views ---
-            loadTeacherDashboard() {
+            async loadTeacherDashboard() {
                 this.showView('view-teacher');
-                const subjects = MarksService.getMySubjects();
+                const subjects = await MarksService.getMySubjects();
                 const container = document.getElementById('teacherSubjects');
                 container.innerHTML = '';
                 
@@ -591,17 +611,17 @@
                 });
             },
 
-            loadSubjectMarks(subjectId, subjectName) {
+            async loadSubjectMarks(subjectId, subjectName) {
                 this.currentSubjectId = subjectId;
                 document.getElementById('subjectTitle').textContent = 'Marks: ' + subjectName;
                 this.showView('view-subject');
                 
-                const students = MarksService.getStudents();
+                const students = await MarksService.getStudents();
                 const tbody = document.querySelector('#marksTable tbody');
                 tbody.innerHTML = '';
 
-                students.forEach(st => {
-                    const mark = MarksService.findMark(st.id, subjectId);
+                for (const st of students) {
+                    const mark = await MarksService.findMark(st.id, subjectId);
                     const editsLeft = MarksService.editsRemaining(mark);
                     const locked = mark && editsLeft === 0;
                     
@@ -631,10 +651,10 @@
                         </td>
                     `;
                     tbody.appendChild(tr);
-                });
+                }
             },
 
-            saveMark(studentId, existingMarkId) {
+            async saveMark(studentId, existingMarkId) {
                 const input = document.getElementById(`score_${studentId}`);
                 const score = input.value;
                 const err = document.getElementById('saveError');
@@ -650,25 +670,22 @@
 
                 try {
                     if (existingMarkId) {
-                        MarksService.editMark(existingMarkId, score);
+                        await MarksService.editMark(existingMarkId, score);
                         suc.textContent = "Mark updated successfully!";
                     } else {
-                        MarksService.addMark({
+                        await MarksService.addMark({
                             studentId: studentId,
                             subjectId: this.currentSubjectId,
                             score: score
                         });
-                        suc.textContent = "Mark added successfully!";
                     }
                     suc.style.display = 'block';
-                    // Reload table
                     const subjectName = document.getElementById('subjectTitle').textContent.replace('Marks: ', '');
-                    this.loadSubjectMarks(this.currentSubjectId, subjectName);
+                    await this.loadSubjectMarks(this.currentSubjectId, subjectName);
                 } catch(error) {
                     err.textContent = error.message;
                     err.style.display = 'block';
                 }
-            }
         };
 
         // Boot
