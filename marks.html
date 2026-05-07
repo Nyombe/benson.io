@@ -115,13 +115,27 @@
 
         .form-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 15px;
             background: var(--gray-50);
             padding: 20px;
             border-radius: var(--radius-md);
             margin-bottom: 30px;
             border: 1px solid var(--gray-200);
+        }
+
+        .student-thumb {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gray-200);
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        .student-info-cell {
+            display: flex;
+            align-items: center;
         }
     </style>
 </head>
@@ -222,13 +236,17 @@
                                 <label>Class</label>
                                 <input type="text" id="newStudentClass" class="form-control" placeholder="e.g. Form 4B">
                             </div>
+                            <div class="form-group">
+                                <label>Student Photo</label>
+                                <input type="file" id="newStudentPhoto" class="form-control" accept="image/*" style="padding: 8px;">
+                            </div>
                             <div class="form-group" style="display: flex; align-items: flex-end;">
                                 <button class="btn btn-primary" onclick="App.addStudent()">Add Student</button>
                             </div>
                         </div>
                         <h4>Current Students</h4>
                         <table id="studentsTable">
-                            <thead><tr><th>Roll No</th><th>Name</th><th>Class</th></tr></thead>
+                            <thead><tr><th>Photo</th><th>Roll No</th><th>Name</th><th>Class</th></tr></thead>
                             <tbody></tbody>
                         </table>
                     </div>
@@ -359,7 +377,10 @@
                         subMarks.forEach(m => {
                             const st = students.find(s => s.id === m.studentId);
                             html += `<tr>
-                                <td>${st ? st.name : 'Unknown'}</td>
+                                <td class="student-info-cell">
+                                    <img src="${st ? st.photo : ''}" class="student-thumb" alt="">
+                                    ${st ? st.name : 'Unknown'}
+                                </td>
                                 <td><strong>${m.score}</strong> / ${m.maxScore}</td>
                                 <td><span class="edit-badge">Edits: ${m.editCount}</span></td>
                             </tr>`;
@@ -384,7 +405,13 @@
             renderAdminStudents() {
                 const students = MarksService.getStudents();
                 const tbody = document.querySelector('#studentsTable tbody');
-                tbody.innerHTML = students.map(s => `<tr><td>${s.rollNumber}</td><td>${s.name}</td><td>${s.class}</td></tr>`).join('');
+                tbody.innerHTML = students.map(s => `
+                    <tr>
+                        <td><img src="${s.photo}" class="student-thumb" alt=""></td>
+                        <td>${s.rollNumber}</td>
+                        <td>${s.name}</td>
+                        <td>${s.class}</td>
+                    </tr>`).join('');
             },
 
             addSubject() {
@@ -410,25 +437,41 @@
                 }
             },
 
-            addStudent() {
+            async addStudent() {
                 const name = document.getElementById('newStudentName').value;
                 const rollNumber = document.getElementById('newStudentRoll').value;
                 const className = document.getElementById('newStudentClass').value;
+                const fileInput = document.getElementById('newStudentPhoto');
                 const err = document.getElementById('studentError');
 
+                let photo = null;
+                if (fileInput.files && fileInput.files[0]) {
+                    photo = await this.toBase64(fileInput.files[0]);
+                }
+
                 try {
-                    MarksService.addStudent({ name, rollNumber, className });
+                    MarksService.addStudent({ name, rollNumber, className, photo });
                     err.style.display = 'none';
                     // Reset inputs
                     document.getElementById('newStudentName').value = '';
                     document.getElementById('newStudentRoll').value = '';
                     document.getElementById('newStudentClass').value = '';
+                    fileInput.value = '';
                     this.renderAdminStudents();
                     alert('Student added successfully!');
                 } catch (e) {
                     err.textContent = e.message;
                     err.style.display = 'block';
                 }
+            },
+
+            toBase64(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = error => reject(error);
+                });
             },
 
             // --- Teacher Views ---
@@ -469,7 +512,10 @@
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td>${st.rollNumber}</td>
-                        <td>${st.name}</td>
+                        <td class="student-info-cell">
+                            <img src="${st.photo}" class="student-thumb" alt="">
+                            ${st.name}
+                        </td>
                         <td>${st.class}</td>
                         <td>
                             <input type="number" id="score_${st.id}" class="mark-input" value="${scoreVal}" min="0" max="100" ${locked ? 'disabled' : ''}>
