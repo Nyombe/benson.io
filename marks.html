@@ -4,17 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Result Management System - Benson.io</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Firebase SDKs (Compat Version for simplicity) -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     
     <script>
-        // Your web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBnjj8AT3pSylLrqRbMFQXItU2AnDXiDqU",
             authDomain: "result-management-system-1c7c7.firebaseapp.com",
@@ -24,312 +22,498 @@
             appId: "1:899292194557:web:c0c7bca09e911b2885c094",
             measurementId: "G-V9HXD1W8FD"
         };
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
     </script>
+
     <style>
-        .app-container {
-            max-width: 1000px;
-            margin: 40px auto;
-            background: var(--card-bg);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-md);
-            overflow: hidden;
-            border: 1px solid var(--gray-100);
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary: #64748b;
+            --accent: #f59e0b;
+            --bg-gradient: radial-gradient(at 0% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+                           radial-gradient(at 50% 0%, hsla(225,39%,20%,1) 0, transparent 50%), 
+                           radial-gradient(at 100% 0%, hsla(225,39%,10%,1) 0, transparent 50%);
+            --glass: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
         }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            background-image: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4, .outfit { font-family: 'Outfit', sans-serif; }
+
+        /* --- Layout --- */
+        .app-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border-radius: 32px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* --- Header --- */
         .app-header {
-            background: var(--primary-blue);
-            color: white;
-            padding: 20px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 30px 40px;
+            background: rgba(255, 255, 255, 0.5);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-        .app-header h2 { margin: 0; font-family: 'Outfit', sans-serif; }
-        .app-content { padding: 30px; }
-        .view { display: none; }
-        .view.active { display: block; }
 
-        /* Login */
-        .login-box { max-width: 400px; margin: 0 auto; padding: 40px 0; }
-        .login-box .form-group { margin-bottom: 20px; }
-        .login-box .btn { width: 100%; }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
 
-        /* Dashboard elements */
-        .dashboard-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .dash-card {
-            background: var(--gray-50);
-            padding: 20px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--gray-200);
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .dash-card:hover { border-color: var(--primary-blue); transform: translateY(-3px); }
-        .dash-card h3 { margin-top: 0; color: var(--secondary-color); }
-        
-        /* Table styles */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--gray-200); }
-        th { background: var(--gray-50); font-weight: 600; color: var(--text-muted); }
-        
-        .mark-input {
-            width: 80px;
-            padding: 8px;
-            border: 1px solid var(--gray-200);
-            border-radius: 4px;
-        }
-        .edit-badge {
-            font-size: 0.8rem;
-            padding: 3px 8px;
+        .brand i {
+            background: var(--primary);
+            color: white;
+            padding: 10px;
             border-radius: 12px;
-            background: var(--gray-100);
-            color: var(--text-muted);
-            margin-left: 10px;
+            font-size: 1.2rem;
         }
-        .edit-badge.warning { background: #fff3cd; color: #856404; }
-        .edit-badge.danger { background: #f8d7da; color: #721c24; }
 
-        .btn-small { padding: 6px 12px; font-size: 0.9rem; }
-        .header-actions { display: flex; gap: 10px; align-items: center; }
-        .user-info { font-size: 0.9rem; opacity: 0.9; }
+        /* --- Navigation --- */
+        .back-nav {
+            margin-bottom: 25px;
+        }
 
-        .back-link {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: var(--primary-blue);
+        .back-nav a {
+            color: white;
             text-decoration: none;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.8;
+            transition: 0.3s;
         }
-        .back-link:hover { text-decoration: underline; }
 
-        /* Tabs */
-        .admin-tabs {
+        .back-nav a:hover { opacity: 1; transform: translateX(-3px); }
+
+        /* --- Buttons --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-outline {
+            background: white;
+            border: 2px solid #e2e8f0;
+            color: var(--secondary);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* --- Login --- */
+        .login-view {
+            max-width: 420px;
+            margin: 60px auto;
+            padding: 50px 40px;
+            text-align: center;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-muted);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #f1f5f9;
+            border-radius: 14px;
+            font-size: 1rem;
+            transition: all 0.2s;
+            box-sizing: border-box;
+            background: #f8fafc;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        /* --- Dashboard --- */
+        .view { display: none; padding: 40px; }
+        .view.active { display: block; animation: slideIn 0.5s ease-out; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(15px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .tab-nav {
             display: flex;
             gap: 10px;
-            margin: 20px 0;
-            border-bottom: 1px solid var(--gray-200);
-            padding-bottom: 0;
+            background: #f1f5f9;
+            padding: 6px;
+            border-radius: 18px;
+            margin-bottom: 35px;
+            width: fit-content;
         }
+
         .tab-btn {
-            padding: 10px 20px;
-            border: none;
-            background: none;
-            cursor: pointer;
+            padding: 10px 24px;
+            border-radius: 14px;
             font-weight: 600;
+            border: none;
+            background: transparent;
             color: var(--text-muted);
-            border-bottom: 3px solid transparent;
-            transition: all 0.2s ease;
+            cursor: pointer;
+            transition: 0.3s;
         }
+
         .tab-btn.active {
-            color: var(--primary-blue);
-            border-bottom-color: var(--primary-blue);
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
-        .admin-section { display: none; padding-top: 20px; }
-        .admin-section.active { display: block; }
 
-        .form-row {
+        .dash-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            background: var(--gray-50);
-            padding: 20px;
-            border-radius: var(--radius-md);
-            margin-bottom: 30px;
-            border: 1px solid var(--gray-200);
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
         }
 
-        .student-thumb {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid #f1f5f9;
+            transition: 0.4s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05);
+            border-color: var(--primary);
+        }
+
+        /* --- Tables --- */
+        .table-container {
+            background: white;
+            border-radius: 20px;
+            border: 1px solid #f1f5f9;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8fafc;
+            text-align: left;
+            padding: 18px 24px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        td {
+            padding: 18px 24px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.95rem;
+        }
+
+        .student-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
             object-fit: cover;
-            border: 2px solid var(--gray-200);
-            vertical-align: middle;
-            margin-right: 10px;
+            border: 2px solid white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
-        .student-info-cell {
-            display: flex;
-            align-items: center;
+
+        /* --- Specific UI --- */
+        .stat-badge {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 4px 12px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 700;
         }
-        .student-info-cell {
-            display: flex;
-            align-items: center;
+
+        .edit-counter {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 8px;
+            background: #f1f5f9;
         }
+        
+        .edit-counter.warning { background: #fef3c7; color: #92400e; }
+        .edit-counter.danger { background: #fee2e2; color: #b91c1c; }
 
         @media print {
-            body * { visibility: hidden; }
-            #printArea, #printArea * { visibility: visible; }
-            #printArea { position: absolute; left: 0; top: 0; width: 100%; }
-            .btn, .navbar, .admin-tabs, .form-row, .back-link { display: none !important; }
+            body { background: white; }
+            .app-container { margin: 0; padding: 0; max-width: 100%; }
+            .glass-panel { box-shadow: none; border: none; }
+            .btn, .tab-nav, .app-header, .back-nav, .form-row { display: none !important; }
         }
     </style>
 </head>
-<body data-theme="light">
-    <!-- Quick Nav back to portfolio -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="position: sticky;">
-        <div class="container">
-            <a class="navbar-brand" href="index.html"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
+<body>
+    <div class="app-container">
+        <div class="back-nav">
+            <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
         </div>
-    </nav>
 
-    <div class="container">
-        <div class="app-container">
-            <div class="app-header">
-                <h2><i class="fas fa-graduation-cap"></i> Result Management System</h2>
-                <div class="header-actions" id="headerActions" style="display: none;">
-                    <span class="user-info" id="userInfo"></span>
-                    <button class="btn btn-outline btn-small" onclick="App.logout()" style="border-color: white; color: white;">Logout</button>
+        <div class="glass-panel">
+            <header class="app-header">
+                <div class="brand">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Result Portal</span>
                 </div>
-            </div>
-            <div class="app-content">
+                <div id="headerActions" style="display: none; align-items: center; gap: 20px;">
+                    <div class="user-pill" id="userInfo" style="background: white; padding: 8px 18px; border-radius: 14px; font-weight: 600; font-size: 0.9rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05);"></div>
+                    <button class="btn btn-outline" onclick="App.logout()" style="padding: 8px 16px; font-size: 0.85rem;">Logout</button>
+                </div>
+            </header>
+
+            <main class="app-content">
                 <!-- Login View -->
                 <div id="view-login" class="view active">
-                    <div class="login-box">
-                        <h3 class="section-title" style="font-size: 1.8rem; margin-bottom: 30px;">Sign In</h3>
-                        <div id="loginError" style="color: #d32f2f; background: #ffebee; padding: 10px; border-radius: 4px; margin-bottom: 15px; display: none; font-size: 0.9rem; border: 1px solid #ffcdd2;"></div>
+                    <div class="login-view">
+                        <h2 style="font-size: 2rem; margin-bottom: 10px;">Welcome Back</h2>
+                        <p style="color: var(--text-muted); margin-bottom: 40px;">Please sign in to manage class results.</p>
+                        
+                        <div id="loginError" style="color: #b91c1c; background: #fee2e2; padding: 14px; border-radius: 14px; margin-bottom: 25px; display: none; font-size: 0.9rem; border: 1px solid #fecaca;"></div>
+                        
                         <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" id="email" class="form-control" placeholder="teacher@school.io" value="math@school.io">
+                            <label>Email Address</label>
+                            <input type="email" id="email" class="form-control" placeholder="admin@school.io" value="admin@school.io">
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input type="password" id="password" class="form-control" value="math123">
+                            <input type="password" id="password" class="form-control" placeholder="••••••••" value="admin123">
                         </div>
-                        <button id="loginBtn" class="btn btn-primary" onclick="App.login()">
-                        <span>Login</span>
-                    </button>
-                        <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">
-                            <strong>Demo Accounts:</strong><br>
-                            Admin: admin@school.io / admin123<br>
-                            Teacher: math@school.io / math123
-                        </p>
+                        <button id="loginBtn" class="btn btn-primary" onclick="App.login()" style="width: 100%; justify-content: center;">
+                            <span>Sign In</span>
+                        </button>
+                        
+                        <div style="margin-top: 30px; padding: 20px; background: #f8fafc; border-radius: 18px; text-align: left; border: 1px solid #f1f5f9;">
+                            <div style="font-weight: 700; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px;">Demo Access</div>
+                            <div style="font-size: 0.9rem; display: flex; flex-direction: column; gap: 8px;">
+                                <div style="display: flex; justify-content: space-between;"><span>Admin:</span> <code>admin@school.io</code></div>
+                                <div style="display: flex; justify-content: space-between;"><span>Teacher:</span> <code>math@school.io</code></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Admin Dashboard View -->
+                <!-- Admin Dashboard -->
                 <div id="view-admin" class="view">
-                    <h3>Administrator Dashboard</h3>
-                    <div class="admin-tabs">
-                        <button class="tab-btn active" onclick="App.switchAdminTab('overview')">Overview</button>
-                        <button class="tab-btn" onclick="App.switchAdminTab('subjects')">Manage Subjects</button>
-                        <button class="tab-btn" onclick="App.switchAdminTab('students')">Manage Students</button>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px;">
+                        <div>
+                            <h2 style="margin: 0;">Admin Command Center</h2>
+                            <p style="color: var(--text-muted); margin: 5px 0 0 0;">Manage your institution's academic data.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="App.printResults()">
+                            <i class="fas fa-print"></i> <span>Export All Results</span>
+                        </button>
                     </div>
 
+                    <nav class="tab-nav">
+                        <button class="tab-btn active" onclick="App.switchAdminTab('overview')">Overview</button>
+                        <button class="tab-btn" onclick="App.switchAdminTab('subjects')">Subjects</button>
+                        <button class="tab-btn" onclick="App.switchAdminTab('students')">Students</button>
+                    </nav>
+
                     <div id="admin-overview" class="admin-section active">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <p>Overview of all subjects and marks. (Read-only)</p>
-                            <button class="btn btn-outline btn-small" onclick="App.printResults()"><i class="fas fa-print"></i> Print All Results</button>
-                        </div>
                         <div id="adminContent"></div>
                     </div>
 
                     <div id="admin-subjects" class="admin-section">
-                        <h4>Add New Subject</h4>
-                        <div id="subjectError" style="color: red; display: none; margin-bottom: 10px;"></div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Subject Name</label>
-                                <input type="text" id="newSubjectName" class="form-control" placeholder="e.g. Physics">
-                            </div>
-                            <div class="form-group">
-                                <label>Subject Code</label>
-                                <input type="text" id="newSubjectCode" class="form-control" placeholder="e.g. PHY">
-                            </div>
-                            <div class="form-group">
-                                <label>Assign Teacher</label>
-                                <select id="assignTeacher" class="form-control"></select>
-                            </div>
-                            <div class="form-group" style="display: flex; align-items: flex-end;">
-                                <button class="btn btn-primary" onclick="App.addSubject()">Add Subject</button>
+                        <div class="card" style="margin-bottom: 40px; cursor: default;">
+                            <h4 style="margin: 0;"><i class="fas fa-plus-circle"></i> Create New Subject</h4>
+                            <div id="subjectError" style="color: #b91c1c; display: none; margin: 10px 0;"></div>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                                <div class="form-group" style="margin:0;">
+                                    <label>Subject Name</label>
+                                    <input type="text" id="newSubjectName" class="form-control" placeholder="Mathematics">
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>Subject Code</label>
+                                    <input type="text" id="newSubjectCode" class="form-control" placeholder="MATH101">
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>Assign Teacher</label>
+                                    <select id="assignTeacher" class="form-control"></select>
+                                </div>
+                                <div style="display: flex; align-items: flex-end;">
+                                    <button class="btn btn-primary" onclick="App.addSubject()" style="width:100%; justify-content: center;">Create</button>
+                                </div>
                             </div>
                         </div>
-                        <h4>Current Subjects</h4>
-                        <table id="subjectsTable">
-                            <thead><tr><th>Name</th><th>Code</th><th>Action</th></tr></thead>
-                            <tbody></tbody>
-                        </table>
+                        <div class="table-container">
+                            <table id="subjectsTable">
+                                <thead><tr><th>Subject Name</th><th>Code</th><th style="text-align:right;">Action</th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
 
                     <div id="admin-students" class="admin-section">
-                        <h4>Add New Student</h4>
-                        <div id="studentError" style="color: red; display: none; margin-bottom: 10px;"></div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Full Name</label>
-                                <input type="text" id="newStudentName" class="form-control" placeholder="e.g. John Doe">
-                            </div>
-                            <div class="form-group">
-                                <label>Roll Number</label>
-                                <input type="text" id="newStudentRoll" class="form-control" placeholder="e.g. 007">
-                            </div>
-                            <div class="form-group">
-                                <label>Class</label>
-                                <input type="text" id="newStudentClass" class="form-control" placeholder="e.g. Form 4B">
-                            </div>
-                            <div class="form-group">
-                                <label>Sex</label>
-                                <select id="newStudentSex" class="form-control">
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Student Photo</label>
-                                <input type="file" id="newStudentPhoto" class="form-control" accept="image/*" style="padding: 8px;">
-                            </div>
-                            <div class="form-group" style="display: flex; align-items: flex-end;">
-                                <button class="btn btn-primary" onclick="App.addStudent()">Add Student</button>
+                        <div class="card" style="margin-bottom: 40px; cursor: default;">
+                            <h4 style="margin: 0;"><i class="fas fa-user-plus"></i> Register New Student</h4>
+                            <div id="studentError" style="color: #b91c1c; display: none; margin: 10px 0;"></div>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px;">
+                                <div class="form-group" style="margin:0;">
+                                    <label>Full Name</label>
+                                    <input type="text" id="newStudentName" class="form-control" placeholder="John Doe">
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>Roll No.</label>
+                                    <input type="text" id="newStudentRoll" class="form-control" placeholder="001">
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>Class</label>
+                                    <input type="text" id="newStudentClass" class="form-control" placeholder="Form 4A">
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>Gender</label>
+                                    <select id="newStudentSex" class="form-control">
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>Upload Photo</label>
+                                    <input type="file" id="newStudentPhoto" class="form-control" accept="image/*" style="padding: 10px;">
+                                </div>
+                                <div style="display: flex; align-items: flex-end;">
+                                    <button class="btn btn-primary" onclick="App.addStudent()" style="width:100%; justify-content: center;">Register</button>
+                                </div>
                             </div>
                         </div>
-                        <h4>Current Students</h4>
-                        <table id="studentsTable">
-                            <thead><tr><th>Photo</th><th>Roll No</th><th>Name</th><th>Sex</th><th>Class</th><th>Action</th></tr></thead>
+                        <div class="table-container">
+                            <table id="studentsTable">
+                                <thead><tr><th>Profile</th><th>Roll No</th><th>Full Name</th><th>Sex</th><th>Class</th><th style="text-align:right;">Action</th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Teacher Dashboard -->
+                <div id="view-teacher" class="view">
+                    <div style="margin-bottom: 40px;">
+                        <h2 style="margin: 0;">Teacher Dashboard</h2>
+                        <p style="color: var(--text-muted); margin: 5px 0 0 0;">Assign and update marks for your assigned subjects.</p>
+                    </div>
+                    <div class="dash-grid" id="teacherSubjects"></div>
+                </div>
+
+                <!-- Marks Entry -->
+                <div id="view-subject" class="view">
+                    <button class="btn btn-outline" onclick="App.showView('view-teacher')" style="margin-bottom: 25px; padding: 8px 16px;">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                        <h2 id="subjectTitle" style="margin: 0;">Manage Marks</h2>
+                        <div class="stat-badge">Max Edits: <span id="maxEdits"></span></div>
+                    </div>
+                    
+                    <div id="saveError" style="color: #b91c1c; background: #fee2e2; padding: 12px; border-radius: 14px; margin-bottom: 20px; display: none; border: 1px solid #fecaca;"></div>
+                    <div id="saveSuccess" style="color: #15803d; background: #dcfce7; padding: 12px; border-radius: 14px; margin-bottom: 20px; display: none; border: 1px solid #bbf7d0;"></div>
+                    
+                    <div class="table-container">
+                        <table id="marksTable">
+                            <thead>
+                                <tr>
+                                    <th>Roll No</th>
+                                    <th>Student</th>
+                                    <th>Class</th>
+                                    <th>Score / 100</th>
+                                    <th>Edits</th>
+                                    <th style="text-align:right;">Action</th>
+                                </tr>
+                            </thead>
                             <tbody></tbody>
                         </table>
                     </div>
                 </div>
-
-                <!-- Teacher Dashboard View -->
-                <div id="view-teacher" class="view">
-                    <h3>My Subjects</h3>
-                    <p>Select a subject to manage student marks.</p>
-                    <div class="dashboard-cards" id="teacherSubjects"></div>
-                </div>
-
-                <!-- Subject Marks View (Teacher) -->
-                <div id="view-subject" class="view">
-                    <a href="#" class="back-link" onclick="App.showView('view-teacher'); return false;"><i class="fas fa-chevron-left"></i> Back to Subjects</a>
-                    <h3 id="subjectTitle">Manage Marks</h3>
-                    <p>Edit limit: Maximum <span id="maxEdits"></span> edits per student mark.</p>
-                    <div id="saveError" style="color: red; margin-bottom: 15px; display: none;"></div>
-                    <div id="saveSuccess" style="color: green; margin-bottom: 15px; display: none;"></div>
-                    <table id="marksTable">
-                        <thead>
-                            <tr>
-                                <th>Roll No</th>
-                                <th>Student Name</th>
-                                <th>Class</th>
-                                <th>Score (out of 100)</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
+            </main>
         </div>
     </div>
 
-    <!-- Load backend logic -->
+    <!-- Logic -->
     <script src="js/marks.js"></script>
     <script>
         const App = {
@@ -338,7 +522,6 @@
 
             async init() {
                 document.getElementById('maxEdits').textContent = window.MAX_EDITS;
-                // Wait for Firebase to check login status
                 this.session = await AuthService.checkAuthState();
                 this.checkSession();
             },
@@ -367,7 +550,7 @@
 
                 try {
                     btn.disabled = true;
-                    btnText.textContent = 'Logging in...';
+                    btnText.textContent = 'Authenticating...';
                     this.session = await AuthService.login(e, p);
                     err.style.display = 'none';
                     this.checkSession();
@@ -375,7 +558,7 @@
                     err.textContent = error.message;
                     err.style.display = 'block';
                     btn.disabled = false;
-                    btnText.textContent = 'Login';
+                    btnText.textContent = 'Sign In';
                 }
             },
 
@@ -388,10 +571,8 @@
             showView(id) {
                 document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
                 document.getElementById(id).classList.add('active');
-                const err = document.getElementById('saveError');
-                const suc = document.getElementById('saveSuccess');
-                if (err) err.style.display = 'none';
-                if (suc) suc.style.display = 'none';
+                if(document.getElementById('saveError')) document.getElementById('saveError').style.display = 'none';
+                if(document.getElementById('saveSuccess')) document.getElementById('saveSuccess').style.display = 'none';
             },
 
             async switchAdminTab(tabId) {
@@ -404,12 +585,7 @@
 
                 if (tabId === 'subjects') await this.renderAdminSubjects();
                 if (tabId === 'students') await this.renderAdminStudents();
-            },
-
-            // --- Admin Views ---
-            async loadAdminDashboard() {
-                this.showView('view-admin');
-                await this.renderAdminOverview();
+                if (tabId === 'overview') await this.renderAdminOverview();
             },
 
             async renderAdminOverview() {
@@ -419,30 +595,35 @@
                 
                 let html = '';
                 subjects.forEach(sub => {
-                    html += `<div style="margin-bottom: 40px;">
-                        <h4 style="border-bottom: 2px solid var(--primary-blue); padding-bottom: 10px;">${sub.name} (${sub.code})</h4>
+                    html += `<div style="margin-bottom: 50px;">
+                        <h3 style="color: var(--primary); display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                            <i class="fas fa-book"></i> ${sub.name} <span style="font-size: 0.9rem; font-weight: 500; color: var(--text-muted);">(${sub.code})</span>
+                        </h3>
+                        <div class="table-container">
                         <table>
-                            <tr><th>Student</th><th>Score</th><th>Teacher Updates</th></tr>`;
+                            <thead><tr><th>Student</th><th>Score / 100</th><th>Update History</th></tr></thead><tbody>`;
                     
                     const subMarks = allMarks.filter(m => m.subjectId === sub.id);
                     if (subMarks.length === 0) {
-                        html += `<tr><td colspan="3" style="text-align:center;">No marks recorded yet.</td></tr>`;
+                        html += `<tr><td colspan="3" style="text-align:center; padding: 40px; color: var(--text-muted);">No records found for this subject.</td></tr>`;
                     } else {
                         subMarks.forEach(m => {
                             const st = students.find(s => s.id === m.studentId);
                             html += `<tr>
-                                <td class="student-info-cell">
-                                    <img src="${st ? st.photo : ''}" class="student-thumb" alt="">
-                                    ${st ? st.name : 'Unknown'}
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <img src="${st ? st.photo : ''}" class="student-avatar" alt="">
+                                        <div style="font-weight: 600;">${st ? st.name : 'Unknown'}</div>
+                                    </div>
                                 </td>
-                                <td><strong>${m.score}</strong> / ${m.maxScore}</td>
-                                <td><span class="edit-badge">Edits: ${m.editCount}</span></td>
+                                <td style="font-size: 1.1rem; font-weight: 700; color: var(--primary);">${m.score}</td>
+                                <td><span class="edit-counter">Revision ${m.editCount}</span></td>
                             </tr>`;
                         });
                     }
-                    html += `</table></div>`;
+                    html += `</tbody></table></div></div>`;
                 });
-                document.getElementById('adminContent').innerHTML = html;
+                document.getElementById('adminContent').innerHTML = html || '<div style="text-align:center; padding: 100px 0; color: var(--text-muted);"><i class="fas fa-folder-open fa-3x" style="margin-bottom: 20px; opacity: 0.2;"></i><br>No subjects created yet.</div>';
             },
 
             async renderAdminSubjects() {
@@ -450,18 +631,18 @@
                 const tbody = document.querySelector('#subjectsTable tbody');
                 tbody.innerHTML = subjects.map(s => `
                     <tr>
-                        <td>${s.name}</td>
-                        <td>${s.code}</td>
-                        <td>
-                            <button class="btn btn-outline btn-small" style="color:red; border-color:red;" onclick="App.deleteSubject('${s.id}')">
-                                <i class="fas fa-trash"></i>
+                        <td style="font-weight: 600;">${s.name}</td>
+                        <td><code style="background: #f1f5f9; padding: 4px 8px; border-radius: 6px;">${s.code}</code></td>
+                        <td style="text-align:right;">
+                            <button class="btn btn-outline" style="color:#ef4444; border-color:#fee2e2; padding: 8px;" onclick="App.deleteSubject('${s.id}')">
+                                <i class="fas fa-trash-alt"></i>
                             </button>
                         </td>
                     </tr>`).join('');
 
                 const teachers = await MarksService.getTeachers();
                 const select = document.getElementById('assignTeacher');
-                select.innerHTML = teachers.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+                select.innerHTML = '<option value="">Select Teacher...</option>' + teachers.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
             },
 
             async renderAdminStudents() {
@@ -469,32 +650,30 @@
                 const tbody = document.querySelector('#studentsTable tbody');
                 tbody.innerHTML = students.map(s => `
                     <tr>
-                        <td><img src="${s.photo}" class="student-thumb" alt=""></td>
-                        <td>${s.rollNumber}</td>
-                        <td>${s.name}</td>
-                        <td>${s.sex}</td>
+                        <td><img src="${s.photo}" class="student-avatar" alt=""></td>
+                        <td style="font-weight: 600;">${s.rollNumber}</td>
+                        <td style="font-weight: 600;">${s.name}</td>
+                        <td><span class="stat-badge" style="background: #f1f5f9; color: #475569;">${s.sex}</span></td>
                         <td>${s.class}</td>
-                        <td>
-                            <button class="btn btn-outline btn-small" style="color:red; border-color:red;" onclick="App.deleteStudent('${s.id}')">
-                                <i class="fas fa-trash"></i>
+                        <td style="text-align:right;">
+                            <button class="btn btn-outline" style="color:#ef4444; border-color:#fee2e2; padding: 8px;" onclick="App.deleteStudent('${s.id}')">
+                                <i class="fas fa-trash-alt"></i>
                             </button>
                         </td>
                     </tr>`).join('');
             },
 
             async deleteSubject(id) {
-                if (confirm('Are you sure? This will delete the subject and ALL recorded marks for it.')) {
+                if (confirm('Permanently delete this subject and all its marks?')) {
                     await MarksService.deleteSubject(id);
                     await this.renderAdminSubjects();
-                    await this.renderAdminOverview();
                 }
             },
 
             async deleteStudent(id) {
-                if (confirm('Are you sure? This will delete the student and ALL their marks.')) {
+                if (confirm('Permanently delete this student and all their marks?')) {
                     await MarksService.deleteStudent(id);
                     await this.renderAdminStudents();
-                    await this.renderAdminOverview();
                 }
             },
 
@@ -506,14 +685,11 @@
 
                 try {
                     const sub = await MarksService.addSubject({ name, code });
-                    if (teacherId) {
-                        await MarksService.assignTeacherToSubject(teacherId, sub.id);
-                    }
+                    if (teacherId) await MarksService.assignTeacherToSubject(teacherId, sub.id);
                     err.style.display = 'none';
                     document.getElementById('newSubjectName').value = '';
                     document.getElementById('newSubjectCode').value = '';
                     await this.renderAdminSubjects();
-                    alert('Subject added successfully!');
                 } catch (e) {
                     err.textContent = e.message;
                     err.style.display = 'block';
@@ -529,9 +705,7 @@
                 const err = document.getElementById('studentError');
 
                 let photo = null;
-                if (fileInput.files && fileInput.files[0]) {
-                    photo = await this.toBase64(fileInput.files[0]);
-                }
+                if (fileInput.files && fileInput.files[0]) photo = await this.toBase64(fileInput.files[0]);
 
                 try {
                     await MarksService.addStudent({ name, rollNumber, className, photo, sex });
@@ -541,7 +715,6 @@
                     document.getElementById('newStudentClass').value = '';
                     fileInput.value = '';
                     await this.renderAdminStudents();
-                    alert('Student added successfully!');
                 } catch (e) {
                     err.textContent = e.message;
                     err.style.display = 'block';
@@ -554,15 +727,17 @@
                 const allMarks = await MarksService.getAllMarks();
 
                 let printHtml = `<div id="printArea">
-                    <h2 style="text-align:center;">Student Result Sheet</h2>
-                    <p style="text-align:center; color: #666;">Generated on ${new Date().toLocaleDateString()}</p>
-                    <table border="1" style="width:100%; border-collapse:collapse; margin-top:20px;">
+                    <div style="text-align:center; margin-bottom: 40px;">
+                        <h1 style="margin: 0; color: #2563eb;">Academic Result Sheet</h1>
+                        <p style="color: #64748b;">Generated: ${new Date().toLocaleString()}</p>
+                    </div>
+                    <table border="1" style="width:100%; border-collapse:collapse;">
                         <thead>
-                            <tr>
-                                <th style="padding:10px;">Roll No</th>
-                                <th style="padding:10px;">Student Name</th>
-                                <th style="padding:10px;">Sex</th>
-                                <th style="padding:10px;">Results (Subject: Score)</th>
+                            <tr style="background: #f8fafc;">
+                                <th style="padding:15px;">Roll No</th>
+                                <th style="padding:15px;">Student Name</th>
+                                <th style="padding:15px;">Sex</th>
+                                <th style="padding:15px;">Marks Obtained</th>
                             </tr>
                         </thead>
                         <tbody>`;
@@ -571,14 +746,14 @@
                     const stMarks = allMarks.filter(m => m.studentId === st.id);
                     const marksStr = stMarks.map(m => {
                         const sub = subjects.find(s => s.id === m.subjectId);
-                        return `${sub ? sub.name : 'Unknown'}: <strong>${m.score}</strong>`;
-                    }).join(', ') || 'No marks recorded';
+                        return `${sub ? sub.name : '?'}: <strong>${m.score}</strong>`;
+                    }).join(' | ') || 'No marks';
 
                     printHtml += `<tr>
-                        <td style="padding:10px;">${st.rollNumber}</td>
-                        <td style="padding:10px;">${st.name}</td>
-                        <td style="padding:10px;">${st.sex}</td>
-                        <td style="padding:10px;">${marksStr}</td>
+                        <td style="padding:15px;">${st.rollNumber}</td>
+                        <td style="padding:15px; font-weight: 600;">${st.name}</td>
+                        <td style="padding:15px;">${st.sex}</td>
+                        <td style="padding:15px;">${marksStr}</td>
                     </tr>`;
                 });
 
@@ -586,11 +761,9 @@
 
                 const oldPrint = document.getElementById('printArea');
                 if (oldPrint) oldPrint.remove();
-                
                 const div = document.createElement('div');
                 div.innerHTML = printHtml;
                 document.body.appendChild(div);
-                
                 window.print();
                 div.remove();
             },
@@ -604,7 +777,6 @@
                 });
             },
 
-            // --- Teacher Views ---
             async loadTeacherDashboard() {
                 this.showView('view-teacher');
                 const subjects = await MarksService.getMySubjects();
@@ -613,16 +785,25 @@
                 
                 subjects.forEach(sub => {
                     const card = document.createElement('div');
-                    card.className = 'dash-card';
-                    card.innerHTML = `<h3>${sub.name}</h3><p>Code: ${sub.code}</p><button class="btn btn-primary btn-small">Manage Marks</button>`;
+                    card.className = 'card';
+                    card.style.background = 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)';
+                    card.innerHTML = `
+                        <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 1px;">${sub.code}</div>
+                        <h3 style="margin: 0; font-size: 1.4rem;">${sub.name}</h3>
+                        <div style="margin-top: 10px; display: flex; align-items: center; justify-content: space-between;">
+                             <span style="font-size: 0.85rem; color: var(--text-muted);"><i class="fas fa-users"></i> Manage Class</span>
+                             <i class="fas fa-arrow-right" style="color: var(--primary);"></i>
+                        </div>
+                    `;
                     card.onclick = () => this.loadSubjectMarks(sub.id, sub.name);
                     container.appendChild(card);
                 });
+                if(subjects.length === 0) container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 100px 0; color: var(--text-muted);"><i class="fas fa-user-clock fa-3x" style="margin-bottom: 20px; opacity: 0.2;"></i><br>No subjects assigned yet. Please contact Admin.</div>';
             },
 
             async loadSubjectMarks(subjectId, subjectName) {
                 this.currentSubjectId = subjectId;
-                document.getElementById('subjectTitle').textContent = 'Marks: ' + subjectName;
+                document.getElementById('subjectTitle').textContent = subjectName;
                 this.showView('view-subject');
                 
                 const students = await MarksService.getStudents();
@@ -634,28 +815,28 @@
                     const editsLeft = MarksService.editsRemaining(mark);
                     const locked = mark && editsLeft === 0;
                     
-                    let badgeClass = '';
-                    if (editsLeft === 1) badgeClass = 'warning';
-                    if (editsLeft === 0) badgeClass = 'danger';
-
+                    const badgeClass = editsLeft === 1 ? 'warning' : (editsLeft === 0 ? 'danger' : '');
                     const scoreVal = mark ? mark.score : '';
+                    
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td>${st.rollNumber}</td>
-                        <td class="student-info-cell">
-                            <img src="${st.photo}" class="student-thumb" alt="">
-                            ${st.name}
-                        </td>
-                        <td>${st.class}</td>
                         <td>
-                            <input type="number" id="score_${st.id}" class="mark-input" value="${scoreVal}" min="0" max="100" ${locked ? 'disabled' : ''}>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <img src="${st.photo}" class="student-avatar" alt="">
+                                <div style="font-weight: 600;">${st.name}</div>
+                            </div>
+                        </td>
+                        <td style="color: var(--text-muted);">${st.class}</td>
+                        <td>
+                            <input type="number" id="score_${st.id}" class="form-control" value="${scoreVal}" min="0" max="100" ${locked ? 'disabled' : ''} style="width: 100px; padding: 8px 12px;">
                         </td>
                         <td>
-                            ${mark ? `<span class="edit-badge ${badgeClass}">${editsLeft} edits left</span>` : '<span class="edit-badge">Not entered</span>'}
+                            <span class="edit-counter ${badgeClass}">${editsLeft} left</span>
                         </td>
-                        <td>
-                            <button class="btn btn-primary btn-small" ${locked ? 'disabled' : ''} onclick="App.saveMark('${st.id}', '${mark ? mark.id : ''}')">
-                                ${mark ? 'Update' : 'Save'}
+                        <td style="text-align:right;">
+                            <button class="btn ${mark ? 'btn-outline' : 'btn-primary'}" ${locked ? 'disabled' : ''} onclick="App.saveMark('${st.id}', '${mark ? mark.id : ''}')" style="padding: 8px 16px; font-size: 0.85rem;">
+                                ${mark ? 'Update' : 'Submit'}
                             </button>
                         </td>
                     `;
@@ -668,28 +849,19 @@
                 const score = input.value;
                 const err = document.getElementById('saveError');
                 const suc = document.getElementById('saveSuccess');
-                err.style.display = 'none';
-                suc.style.display = 'none';
+                err.style.display = 'none'; suc.style.display = 'none';
 
-                if (score === '') {
-                    err.textContent = "Please enter a valid score.";
-                    err.style.display = 'block';
-                    return;
+                if (score === '' || score < 0 || score > 100) {
+                    err.textContent = "Please enter a valid score between 0 and 100.";
+                    err.style.display = 'block'; return;
                 }
 
                 try {
-                    if (existingMarkId) {
-                        await MarksService.editMark(existingMarkId, score);
-                        suc.textContent = "Mark updated successfully!";
-                    } else {
-                        await MarksService.addMark({
-                            studentId: studentId,
-                            subjectId: this.currentSubjectId,
-                            score: score
-                        });
-                    }
+                    if (existingMarkId) await MarksService.editMark(existingMarkId, score);
+                    else await MarksService.addMark({ studentId, subjectId: this.currentSubjectId, score });
+                    suc.textContent = "Record successfully saved to cloud.";
                     suc.style.display = 'block';
-                    const subjectName = document.getElementById('subjectTitle').textContent.replace('Marks: ', '');
+                    const subjectName = document.getElementById('subjectTitle').textContent;
                     await this.loadSubjectMarks(this.currentSubjectId, subjectName);
                 } catch(error) {
                     err.textContent = error.message;
@@ -698,7 +870,6 @@
             }
         };
 
-        // Boot
         document.addEventListener('DOMContentLoaded', () => App.init());
     </script>
 </body>
