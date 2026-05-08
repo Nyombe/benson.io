@@ -21,9 +21,14 @@
 
 <body>
     <!-- Header/Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#"><img src="Images/5.jpg" alt="Benson" class="nav-logo-img"> Benson</a>
+            <a class="navbar-brand" href="#">
+                <div class="nav-logo-container">
+                    <img src="Images/5.jpg" alt="Benson" class="nav-logo-img">
+                </div>
+                <span class="brand-text">Benson</span>
+            </a>
             <button class="navbar-toggler" type="button" aria-label="Toggle navigation" data-bs-toggle="collapse"
                 data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -38,7 +43,7 @@
                     <li class="nav-item"><a class="nav-link" href="#journey">Journey</a></li>
                     <li class="nav-item"><a class="nav-link" href="#future-skills">Skills Roadmap</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="marks.html">Marks Portal</a></li>
+                    <li class="nav-item"><a class="nav-link portal-link" href="marks.html">Marks Portal <i class="fas fa-external-link-alt"></i></a></li>
                     <li class="nav-item theme-toggle-item">
                         <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
                             <i class="fas fa-moon"></i>
@@ -51,25 +56,37 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
+        <div class="hero-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
         <div class="container">
-            <div class="hero-content">
-                <h1><span class="hero-title-serif">From Class to </span><span class="hero-title-italic">Code</span></h1>
-                <h2>Bridging Education & Technology</h2>
-                <p>BSc Information Technology Graduate | Teaching Fellow | ML Researcher | Full-Stack Developer</p>
-                <div class="achievement-highlights">
-                    <span>🎓 Recent Graduate</span>
-                    <span>👨‍🏫 Teaching Experience</span>
-                    <span>🤖 ML Projects</span>
-                    <span>🌍 Urban Planning Research</span>
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="hero-badge">Available for Research & Development</div>
+                    <h1><span class="hero-title-serif">From Class to </span><span class="hero-title-italic">Code</span></h1>
+                    <h2>Bridging Education & Technology</h2>
+                    <p class="hero-subtitle">BSc Information Technology Graduate | Teaching Fellow | ML Researcher | Full-Stack Developer</p>
+                    <div class="achievement-highlights">
+                        <span>🎓 Recent Graduate</span>
+                        <span>👨‍🏫 Teaching Fellow</span>
+                        <span>🤖 ML Researcher</span>
+                    </div>
+                    <div class="hero-cta">
+                        <a href="#projects" class="btn btn-primary btn-glow">Explore Work</a>
+                        <a href="assets/resume.pdf" class="btn btn-secondary" download>Technical Resume</a>
+                        <a href="#contact" class="btn btn-outline">Contact Me</a>
+                    </div>
                 </div>
-                <div class="hero-cta">
-                    <a href="#projects" class="btn btn-primary">View Projects</a>
-                    <a href="assets/resume.pdf" class="btn btn-secondary" download>Technical Resume</a>
-                    <a href="#contact" class="btn btn-outline">Contact Me</a>
+                <div class="hero-image-container">
+                    <div class="image-wrapper">
+                        <img src="Images/5.jpg" alt="Nyombe Benson Jalle" class="floating-img">
+                        <div class="experience-badge">
+                            <span class="count">4+</span>
+                            <span class="text">Years of<br>Learning</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="hero-image">
-                <img src="Images/5.jpg" alt="Nyombe Benson Jalle">
             </div>
         </div>
     </section>
@@ -168,20 +185,23 @@
     <!-- Portfolio Section - Research & Projects -->
     <section id="projects" class="section projects-section">
         <div class="container">
-            <h2 class="section-title">GitHub Portfolio</h2>
+            <div class="section-header">
+                <h2 class="section-title">GitHub Portfolio</h2>
+                <p class="section-subtitle">A collection of research projects and software solutions.</p>
+            </div>
             <div class="projects-grid">
                 <!-- Featured: Achol Fashion Store -->
-                <div class="project-card featured-project fade-in">
+                <div class="project-card featured-project reveal-up">
                     <div class="project-image-wrap">
                         <img src="Images/achol-showcase.png" alt="Achol Fashion Store Showcase" class="project-img">
                         <div class="project-overlay">
-                            <a href="https://github.com/Nyombe/Achol-Store" target="_blank" class="btn btn-sm">View Repository</a>
+                            <a href="https://github.com/Nyombe/Achol-Store" target="_blank" class="btn btn-bright btn-sm">View Repository</a>
                         </div>
                     </div>
                     <div class="project-details">
                         <div class="project-header">
                             <h3>Achol Fashion Store</h3>
-                            <span class="project-tag"><i class="fab fa-github"></i> Django</span>
+                            <span class="project-tag tag-primary"><i class="fab fa-github"></i> Django</span>
                         </div>
                         <p class="project-desc">A premium e-commerce platform built with Django, featuring product discovery, shopping cart, and secure checkout logic.</p>
                         <div class="tech-stack">
@@ -194,49 +214,54 @@
                 </div>
 
                 <!-- Urban Growth Prediction Project -->
-                <div class="project-card fade-in">
-                    <div class="project-header">
-                        <h3>Urban Growth Prediction: Juba</h3>
-                        <span class="project-tag"><i class="fab fa-github"></i> ML Research</span>
+                <div class="project-card reveal-up" style="transition-delay: 0.1s;">
+                    <div class="project-details">
+                        <div class="project-header">
+                            <h3>Urban Growth Prediction: Juba</h3>
+                            <span class="project-tag tag-bright"><i class="fab fa-github"></i> ML Research</span>
+                        </div>
+                        <p class="project-desc">Predictive modeling of urban expansion using historical geospatial data for evidence-based development strategies.</p>
+                        <div class="tech-stack">
+                            <span>Python</span>
+                            <span>ML</span>
+                            <span>GIS Mapping</span>
+                        </div>
+                        <a href="https://github.com/Nyombe/gradProjects" target="_blank" class="repo-link">View Project <i class="fas fa-external-link-alt"></i></a>
                     </div>
-                    <p class="project-desc">Predictive modeling of urban expansion using historical geospatial data for evidence-based development strategies.</p>
-                    <div class="tech-stack">
-                        <span>Python</span>
-                        <span>ML</span>
-                        <span>GIS Mapping</span>
-                    </div>
-                    <a href="https://github.com/Nyombe/gradProjects" target="_blank" class="repo-link">View Project <i class="fas fa-external-link-alt"></i></a>
                 </div>
 
                 <!-- Fire Detection ML Project -->
-                <div class="project-card fade-in">
-                    <div class="project-header">
-                        <h3>Fire Detection System</h3>
-                        <span class="project-tag"><i class="fab fa-github"></i> Computer Vision</span>
+                <div class="project-card reveal-up" style="transition-delay: 0.2s;">
+                    <div class="project-details">
+                        <div class="project-header">
+                            <h3>Fire Detection System</h3>
+                            <span class="project-tag tag-cyan"><i class="fab fa-github"></i> Computer Vision</span>
+                        </div>
+                        <p class="project-desc">Real-time image classification for early fire detection, utilizing deep learning and computer vision techniques.</p>
+                        <div class="tech-stack">
+                            <span>TensorFlow</span>
+                            <span>OpenCV</span>
+                            <span>CNN</span>
+                        </div>
+                        <a href="https://github.com/Nyombe/Fire-Detection" target="_blank" class="repo-link">View Project <i class="fas fa-external-link-alt"></i></a>
                     </div>
-                    <p class="project-desc">Real-time image classification for early fire detection, utilizing deep learning and computer vision techniques.</p>
-                    <div class="tech-stack">
-                        <span>TensorFlow</span>
-                        <span>OpenCV</span>
-                        <span>CNN</span>
-                    </div>
-                    <a href="https://github.com/Nyombe/Fire-Detection" target="_blank" class="repo-link">View Project <i class="fas fa-external-link-alt"></i></a>
                 </div>
 
                 <!-- Student Marks Management Project -->
-                <div class="project-card fade-in">
-                    <div class="project-header">
-                        <h3>Result Management System</h3>
-                        <span class="project-tag"><i class="fas fa-graduation-cap"></i> Portal</span>
+                <div class="project-card reveal-up highlight-card" style="transition-delay: 0.3s;">
+                    <div class="project-details">
+                        <div class="project-header">
+                            <h3>Result Management System</h3>
+                            <span class="project-tag tag-primary"><i class="fas fa-graduation-cap"></i> Portal</span>
+                        </div>
+                        <p class="project-desc">A secure, role-based single-page application for teachers and admins to manage student examination marks with strict access control.</p>
+                        <div class="tech-stack">
+                            <span>HTML5</span>
+                            <span>Vanilla JS</span>
+                            <span>Firebase</span>
+                        </div>
+                        <a href="marks.html" class="repo-link important-link">Open Portal <i class="fas fa-external-link-alt"></i></a>
                     </div>
-                    <p class="project-desc">A secure, role-based single-page application for teachers and admins to manage student examination marks with strict access control.</p>
-                    <div class="tech-stack">
-                        <span>HTML5</span>
-                        <span>CSS3</span>
-                        <span>Vanilla JS</span>
-                        <span>Local Storage</span>
-                    </div>
-                    <a href="marks.html" class="repo-link">View Portal <i class="fas fa-external-link-alt"></i></a>
                 </div>
             </div>
         </div>
