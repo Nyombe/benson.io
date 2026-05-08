@@ -229,7 +229,7 @@ section {
     list-style: none;
     margin: 0;
     padding: 0;
-    gap: 2rem;
+    gap: 1.25rem; /* Reduced from 2rem to prevent overflow */
     align-items: center;
 }
 
@@ -374,7 +374,8 @@ section {
     align-items: center;
     justify-content: center;
     transition: all 0.4s var(--ease-out);
-    margin-left: 1.5rem;
+    margin-left: 0.5rem; /* Reduced margin */
+    flex-shrink: 0; /* Ensure it never disappears */
     backdrop-filter: blur(5px);
 }
 
@@ -388,11 +389,13 @@ section {
 
 .theme-toggle i {
     font-size: 1.1rem;
+    color: inherit; /* Ensure it takes button color */
 }
 
 :root[data-theme='dark'] .theme-toggle {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: var(--gray-100);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff; /* Forced white for visibility */
 }
 
 /* Back to Top */
