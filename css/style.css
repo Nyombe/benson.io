@@ -363,32 +363,36 @@ section {
 
 /* Theme Toggle Button */
 .theme-toggle {
-    background: transparent;
-    border: 2px solid var(--gray-200);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--gray-200);
     color: var(--text-color);
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all var(--transition-normal);
-    margin-left: 1rem;
+    transition: all 0.4s var(--ease-out);
+    margin-left: 1.5rem;
+    backdrop-filter: blur(5px);
 }
 
 .theme-toggle:hover {
-    background: var(--gray-100);
-    transform: rotate(15deg);
+    background: var(--primary-indigo);
+    color: white;
+    border-color: var(--primary-indigo);
+    transform: rotate(360deg) scale(1.1);
+    box-shadow: 0 0 15px rgba(79, 70, 229, 0.4);
 }
 
-/* Light mode: show moon icon */
-.theme-toggle i { font-family: "Font Awesome 6 Free"; font-weight: 900; }
-.theme-toggle i::before { content: "\f186"; } /* fa-moon */
+.theme-toggle i {
+    font-size: 1.1rem;
+}
 
-/* Dark mode: switch to sun icon */
-:root[data-theme='dark'] .theme-toggle i::before {
-    content: "\f185"; /* fa-sun */
+:root[data-theme='dark'] .theme-toggle {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--gray-100);
 }
 
 /* Back to Top */
