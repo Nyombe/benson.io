@@ -65,19 +65,20 @@
 :root[data-theme='dark'] {
     --bg-color: #020617;
     --card-bg: #0f172a;
-    --nav-bg: rgba(2, 6, 23, 0.7);
-    --text-color: #f8fafc;
+    --nav-bg: rgba(2, 6, 23, 0.85);
+    --text-color: #f1f5f9;
     --text-muted: #94a3b8;
+    --secondary-color: #f8fafc; /* Brightened for headings in dark mode */
     --gray-50: #0f172a;
     --gray-100: #1e293b;
     --gray-200: #334155;
     --gray-600: #94a3b8;
     --gray-800: #f1f5f9;
     --gray-900: #f8fafc;
-    --primary-indigo: #6366f1;
-    --primary-indigo-dark: #818cf8;
-    --glass-bg: rgba(15, 23, 42, 0.8);
-    --glass-border: rgba(255, 255, 255, 0.1);
+    --primary-indigo: #818cf8;
+    --primary-indigo-dark: #a5b4fc;
+    --glass-bg: rgba(15, 23, 42, 0.9);
+    --glass-border: rgba(255, 255, 255, 0.15);
     --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
     --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
 }
@@ -188,19 +189,33 @@ section {
 .portal-link {
     background: linear-gradient(135deg, var(--accent-bright), #ff8a65);
     color: white !important;
-    padding: 10px 22px !important;
-    border-radius: 30px; /* Pill shape */
+    padding: 10px 24px !important;
+    border-radius: 50px; /* Perfect pill shape */
     margin-left: 15px;
     font-weight: 700;
     transition: all 0.4s var(--ease-out);
     box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex; /* Fix for text stacking */
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap; /* Prevent wrapping */
+    text-decoration: none;
+}
+
+.portal-link i {
+    font-size: 0.9rem;
+    transition: transform 0.3s ease;
+}
+
+.portal-link:hover i {
+    transform: translate(2px, -2px);
 }
 
 .portal-link:hover {
     background: linear-gradient(135deg, #ff8a65, var(--accent-bright));
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(255, 87, 34, 0.5), 0 0 15px rgba(255, 87, 34, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 87, 34, 0.5);
 }
 
 :root[data-theme='dark'] .portal-link {
@@ -543,15 +558,41 @@ header {
 
 .hero-content h1 {
     font-size: 5.5rem;
-    line-height: 0.9;
+    line-height: 0.95;
     margin-bottom: 24px;
+    font-weight: 900;
+    letter-spacing: -3px;
 }
 
-.hero-subtitle {
-    font-size: 1.25rem;
-    color: var(--text-muted);
-    margin-bottom: 32px;
-    max-width: 600px;
+.hero-title-serif {
+    font-family: 'Playfair Display', serif;
+    color: var(--text-color);
+}
+
+.hero-title-italic {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent-bright) 0%, #ff8a65 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    padding-right: 10px;
+    animation: pulse-glow 3s infinite;
+}
+
+.section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 50px;
+    position: relative;
+    color: var(--secondary-color);
+    letter-spacing: -1px;
+}
+
+:root[data-theme='dark'] .section-title {
+    text-shadow: 0 0 20px rgba(129, 140, 248, 0.1);
 }
 
 .achievement-highlights {
