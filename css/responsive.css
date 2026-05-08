@@ -88,6 +88,36 @@
         padding: 12px;
         right: 0;
     }
+
+    /* Mobile Timeline */
+    .timeline::before {
+        left: 20px;
+    }
+
+    .timeline-item, .timeline-item:nth-child(odd) {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-left: 50px;
+        margin-bottom: 40px;
+    }
+
+    .timeline-content, .timeline-item:nth-child(odd) .timeline-content {
+        width: 100%;
+        margin: 0;
+    }
+
+    .timeline-date, .timeline-item:nth-child(odd) .timeline-date, .timeline-item:nth-child(even) .timeline-date {
+        width: 100%;
+        text-align: left;
+        padding: 0;
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+    }
+
+    .timeline-content::before, .timeline-item:nth-child(odd) .timeline-content::before, .timeline-item:nth-child(even) .timeline-content::before {
+        left: -40px;
+        right: auto;
+    }
 }
 
 @media (max-width: 576px) {

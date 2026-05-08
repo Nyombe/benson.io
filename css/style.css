@@ -186,19 +186,26 @@ section {
 }
 
 .portal-link {
-    background: var(--accent-bright);
+    background: linear-gradient(135deg, var(--accent-bright), #ff8a65);
     color: white !important;
-    padding: 8px 18px !important;
-    border-radius: 12px;
-    margin-left: 10px;
-    transition: all 0.3s ease;
+    padding: 10px 22px !important;
+    border-radius: 30px; /* Pill shape */
+    margin-left: 15px;
+    font-weight: 700;
+    transition: all 0.4s var(--ease-out);
     box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .portal-link:hover {
-    background: var(--accent-bright-hover) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255, 87, 34, 0.4);
+    background: linear-gradient(135deg, #ff8a65, var(--accent-bright));
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(255, 87, 34, 0.5), 0 0 15px rgba(255, 87, 34, 0.3);
+}
+
+:root[data-theme='dark'] .portal-link {
+    box-shadow: 0 4px 20px rgba(255, 87, 34, 0.2);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Navigation Menu */
@@ -752,14 +759,13 @@ header {
 
 /* ===== TIMELINE SECTION ===== */
 .timeline-section {
-    /* inherits section padding */
+    background: var(--bg-color);
 }
 
 .timeline {
     position: relative;
-    max-width: 900px;
+    max-width: 1000px;
     margin: 60px auto 0;
-    padding-left: 0;
 }
 
 .timeline::before {
@@ -769,80 +775,93 @@ header {
     transform: translateX(-50%);
     top: 0;
     bottom: 0;
-    width: 3px;
-    background: linear-gradient(to bottom, #0077b5, #00a8ff);
-    border-radius: 3px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--primary-indigo), var(--accent-cyan));
+    border-radius: 2px;
 }
 
 .timeline-item {
     display: flex;
     justify-content: center;
-    margin-bottom: 60px;
+    align-items: center;
+    margin-bottom: 80px;
     position: relative;
     width: 100%;
 }
 
-.timeline-item:nth-child(odd) .timeline-content {
-    margin-left: auto;
-    margin-right: 60px;
-    text-align: right;
-}
-
-.timeline-item:nth-child(even) .timeline-content {
-    margin-right: auto;
-    margin-left: 60px;
-    text-align: left;
+.timeline-item:nth-child(odd) {
+    flex-direction: row-reverse;
 }
 
 .timeline-content {
     background: var(--card-bg);
     padding: 30px;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     box-shadow: var(--shadow-md);
-    width: 45%;
+    width: 44%;
     position: relative;
-    border-top: 4px solid var(--primary-blue);
-    transition: all 0.3s ease;
+    border: 1px solid var(--gray-200);
+    transition: all 0.4s var(--ease-out);
+    text-align: left;
 }
 
-.timeline-content:hover {
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
-    transform: translateY(-3px);
+.timeline-item:hover .timeline-content {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-indigo);
 }
 
 .timeline-content::before {
     content: '';
     position: absolute;
-    top: 30px;
-    width: 20px;
-    height: 20px;
+    top: 50%;
+    width: 16px;
+    height: 16px;
     background: white;
     border-radius: 50%;
-    border: 4px solid #0077b5;
-    box-shadow: 0 0 0 3px white;
+    border: 3px solid var(--primary-indigo);
+    box-shadow: 0 0 0 4px var(--bg-color);
     z-index: 2;
+    transform: translateY(-50%);
 }
 
 .timeline-item:nth-child(odd) .timeline-content::before {
-    left: auto;
-    right: -50px;
+    left: -60px;
 }
 
 .timeline-item:nth-child(even) .timeline-content::before {
-    left: -50px;
-    right: auto;
+    right: -60px;
+}
+
+.timeline-date {
+    width: 44%;
+    font-weight: 800;
+    font-family: 'Outfit', sans-serif;
+    color: var(--primary-indigo);
+    font-size: 1.4rem;
+    letter-spacing: -0.5px;
+}
+
+.timeline-item:nth-child(odd) .timeline-date {
+    padding-left: 60px;
+    text-align: left;
+}
+
+.timeline-item:nth-child(even) .timeline-date {
+    padding-right: 60px;
+    text-align: right;
 }
 
 .timeline-content h3 {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     color: var(--secondary-color);
-    margin-bottom: 8px;
-    margin-top: 0;
+    margin-bottom: 12px;
+    font-weight: 700;
 }
 
 .timeline-content p {
     color: var(--text-muted);
-    font-size: 0.95rem;
+    font-size: 1rem;
     line-height: 1.6;
     margin: 0;
 }
