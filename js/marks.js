@@ -14,30 +14,13 @@ const AuthService = {
 
     async login(email, password) {
         try {
-            let userCredential;
-            try {
-                // Try to sign in first
-                userCredential = await auth.signInWithEmailAndPassword(email, password);
-            } catch (signInError) {
-                // If user not found, try to create account (helper for first login)
-                if (signInError.code === 'auth/user-not-found' || signInError.code === 'auth/invalid-credential') {
-                    userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                } else {
-                    throw signInError;
-                }
-            }
-
+            const userCredential = await auth.signInWithEmailAndPassword(email, password);
             const userDoc = await db.collection('users').doc(userCredential.user.uid).get();
-            
+
             if (!userDoc.exists) {
-                // Setup user profile
+                // Profile was deleted or never created — rebuild it
                 const role = email.toLowerCase().includes('admin') ? 'admin' : 'teacher';
-                const profile = {
-                    name: email.split('@')[0],
-                    email: email,
-                    role: role,
-                    subjectIds: []
-                };
+                const profile = { name: email.split('@')[0], email, role, subjectIds: [] };
                 await db.collection('users').doc(userCredential.user.uid).set(profile);
                 this.currentUser = { id: userCredential.user.uid, ...profile };
             } else {
@@ -46,6 +29,35 @@ const AuthService = {
             return this.currentUser;
         } catch (error) {
             console.error("Login error:", error);
+            // Surface user-friendly messages
+            const code = error.code;
+            if (code === 'auth/invalid-credential' || code === 'auth/wrong-password') {
+                throw new Error('Incorrect email or password.');
+            } else if (code === 'auth/user-not-found') {
+                throw new Error('No account found with this email. Please sign up first.');
+            } else if (code === 'auth/too-many-requests') {
+                throw new Error('Too many attempts. Please try again later.');
+            }
+            throw new Error(error.message);
+        }
+    },
+
+    async signup(email, password) {
+        try {
+            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+            const role = email.toLowerCase().includes('admin') ? 'admin' : 'teacher';
+            const profile = { name: email.split('@')[0], email, role, subjectIds: [] };
+            await db.collection('users').doc(userCredential.user.uid).set(profile);
+            this.currentUser = { id: userCredential.user.uid, ...profile };
+            return this.currentUser;
+        } catch (error) {
+            console.error("Signup error:", error);
+            const code = error.code;
+            if (code === 'auth/email-already-in-use') {
+                throw new Error('This email is already registered. Please sign in instead.');
+            } else if (code === 'auth/weak-password') {
+                throw new Error('Password must be at least 6 characters.');
+            }
             throw new Error(error.message);
         }
     },
