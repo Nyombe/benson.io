@@ -175,6 +175,7 @@ section {
     height: 38px;
     border-radius: 50%;
     object-fit: cover;
+    object-position: center top; /* Shift focus to face */
     border: 2px solid white;
 }
 
@@ -644,6 +645,7 @@ header {
     width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
+    object-position: center 10%; /* Center the face properly */
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-xl);
     animation: float 6s ease-in-out infinite;
