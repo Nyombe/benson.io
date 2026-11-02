@@ -34,8 +34,6 @@
             --secondary: #0f172a;
             --accent: #ff5722; /* Bright Electric Orange for importance */
             --accent-cyan: #06b6d4;
-            --bg-gradient: radial-gradient(at 0% 0%, hsla(231, 62%, 10%, 1) 0, transparent 50%), 
-                           radial-gradient(at 100% 0%, hsla(263, 62%, 10%, 1) 0, transparent 50%);
             --glass: rgba(255, 255, 255, 0.9);
             --glass-border: rgba(255, 255, 255, 0.1);
             --text-main: #1e293b;
@@ -46,8 +44,6 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #0f172a;
-            background-image: var(--bg-gradient);
-            background-attachment: fixed;
             color: var(--text-main);
             margin: 0;
             min-height: 100vh;
@@ -199,7 +195,7 @@
         
         .stat-card.important {
             border: 2px solid var(--accent);
-            background: linear-gradient(135deg, white, rgba(255, 87, 34, 0.05));
+            background: white;
         }
 
         .stat-card.important .value { color: var(--accent); }
@@ -905,7 +901,7 @@
                 subjects.forEach(sub => {
                     const card = document.createElement('div');
                     card.className = 'card';
-                    card.style.background = 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)';
+                    card.style.background = '#ffffff';
                     card.innerHTML = `
                         <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 1px;">${sub.code}</div>
                         <h3 style="margin: 0; font-size: 1.4rem;">${sub.name}</h3>

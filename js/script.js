@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 3. MOBILE NAVIGATION TOGGLE
     const navbarToggler = document.querySelector('.navbar-toggler');
-    const navbarNav = document.getElementById('navbarNav');
+    const navbarNav = document.querySelector('#navbarNav .navbar-nav');
     if (navbarToggler && navbarNav) {
         navbarToggler.addEventListener('click', function () {
             navbarNav.classList.toggle('show');
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (cachedData) {
                 const { timestamp, articles } = JSON.parse(cachedData);
                 if (Date.now() - timestamp < CACHE_DURATION) {
-                    renderNews(articles);
+                    renderNews(articles.slice(0, 3));
                     return;
                 }
             }
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = await response.json();
             if (data.status !== 'ok') throw new Error('API returned error');
 
-            const articles = data.items.slice(0, 6).map(item => ({
+            const articles = data.items.slice(0, 3).map(item => ({
                 title: item.title,
                 link: item.link,
                 pubDate: new Date(item.pubDate).toLocaleDateString(),

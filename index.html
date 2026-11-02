@@ -29,8 +29,8 @@
                 </div>
                 <span class="brand-text">Benson</span>
             </a>
-            <button class="navbar-toggler" type="button" aria-label="Toggle navigation" data-bs-toggle="collapse"
-                data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" aria-label="Toggle navigation" aria-expanded="false"
+                aria-controls="navbarNav" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -42,8 +42,7 @@
                     <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
                     <li class="nav-item"><a class="nav-link" href="#future-skills">Skills Roadmap</a></li>
                     <li class="nav-item"><a class="nav-link" href="#news">News</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link portal-link" href="marks.html">Marks Portal <i class="fas fa-external-link-alt"></i></a></li>
+                    <li class="nav-item"><a class="nav-link nav-cta" href="#contact">Let's collaborate <i class="fas fa-arrow-right" aria-hidden="true"></i></a></li>
                     <li class="nav-item theme-toggle-item">
                         <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
                             <i class="fas fa-moon"></i>
@@ -56,10 +55,6 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
-        <div class="hero-shapes">
-            <div class="shape shape-1"></div>
-            <div class="shape shape-2"></div>
-        </div>
         <div class="container">
             <div class="hero-grid">
                 <div class="hero-content">
@@ -68,9 +63,9 @@
                     <h2>Bridging Education & Technology</h2>
                     <p class="hero-subtitle">BSc Information Technology Graduate | Teaching Fellow | ML Researcher | Full-Stack Developer</p>
                     <div class="achievement-highlights">
-                        <span>🎓 Recent Graduate</span>
-                        <span>👨‍🏫 Teaching Fellow</span>
-                        <span>🤖 ML Researcher</span>
+                        <span><i class="fas fa-graduation-cap" aria-hidden="true"></i> Recent Graduate</span>
+                        <span><i class="fas fa-chalkboard-user" aria-hidden="true"></i> Teaching Fellow</span>
+                        <span><i class="fas fa-brain" aria-hidden="true"></i> ML Researcher</span>
                     </div>
                     <div class="hero-cta">
                         <a href="#projects" class="btn btn-primary btn-glow">Explore Work</a>
@@ -116,7 +111,7 @@
             <h2 class="section-title">Education & Knowledge Transfer</h2>
             <div class="teaching-grid">
                 <div class="teaching-card fade-in">
-                    <h3>🎓 Deep Learning Teaching Fellow</h3>
+                    <h3><i class="fas fa-chalkboard-user" aria-hidden="true"></i> Deep Learning Teaching Fellow</h3>
                     <p>Mentored peers in advanced machine learning concepts, demonstrating ability to simplify complex
                         AI topics and facilitate peer learning.</p>
                     <div class="skill-tags">
@@ -126,7 +121,7 @@
                     </div>
                 </div>
                 <div class="teaching-card fade-in">
-                    <h3>👨‍🏫 Professional Teaching Experience</h3>
+                    <h3><i class="fas fa-person-chalkboard" aria-hidden="true"></i> Professional Teaching Experience</h3>
                     <p>Taught technology at Darling Wisdom Academy Secondary School, developing communication and
                         leadership skills through educational roles.</p>
                     <div class="skill-tags">
@@ -189,20 +184,21 @@
                 <p class="section-subtitle">A collection of research projects and software solutions.</p>
             </div>
             <div class="projects-grid">
-                <!-- Featured: Achol Fashion Store -->
+                <!-- Featured: A.K.D Fashion and Design -->
                 <div class="project-card featured-project reveal-up">
                     <div class="project-image-wrap">
-                        <img src="Images/achol-showcase.png" alt="Achol Fashion Store Showcase" class="project-img">
+                        <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800&q=80" alt="A.K.D Fashion and Design Showcase" class="project-img">
                         <div class="project-overlay">
                             <a href="https://github.com/Nyombe/Achol-Store" target="_blank" class="btn btn-bright btn-sm">View Repository</a>
+                            <a href="https://achol-fashion-store.onrender.com" target="_blank" class="btn btn-outline btn-sm" style="margin-top:8px;">Live Demo <i class="fas fa-external-link-alt"></i></a>
                         </div>
                     </div>
                     <div class="project-details">
                         <div class="project-header">
-                            <h3>Achol Fashion Store</h3>
+                            <h3>A.K.D Fashion &amp; Design</h3>
                             <span class="project-tag tag-primary"><i class="fab fa-github"></i> Django</span>
                         </div>
-                        <p class="project-desc">A premium e-commerce platform built with Django, featuring product discovery, shopping cart, and secure checkout logic.</p>
+                        <p class="project-desc">A premium multi-vendor e-commerce platform for A.K.D Fashion &amp; Design — featuring product discovery, shopping cart, secure checkout, and a merchant portal, all built with Django &amp; TailwindCSS.</p>
                         <div class="tech-stack">
                             <span>Python</span>
                             <span>Django</span>
@@ -211,6 +207,28 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Resort Beach Hotel booking website -->
+                <article class="project-card resort-project reveal-up">
+                    <div class="project-image-wrap">
+                        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=900&q=85"
+                            alt="Resort hotel with a pool surrounded by palm trees" class="project-img" width="900"
+                            height="600" loading="lazy">
+                    </div>
+                    <div class="project-details">
+                        <div class="project-header">
+                            <h3>Resort Beach Hotel</h3>
+                            <span class="project-tag tag-primary">Resort Booking</span>
+                        </div>
+                        <p class="project-desc">A resort website where guests can explore and book services at Resort Beach Hotel, built with the MERN stack.</p>
+                        <div class="tech-stack">
+                            <span>MongoDB</span>
+                            <span>Express</span>
+                            <span>React</span>
+                            <span>Node.js</span>
+                        </div>
+                    </div>
+                </article>
 
                 <!-- Urban Growth Prediction Project -->
                 <div class="project-card reveal-up" style="transition-delay: 0.1s;">
@@ -246,22 +264,6 @@
                     </div>
                 </div>
 
-                <!-- Student Marks Management Project -->
-                <div class="project-card reveal-up highlight-card" style="transition-delay: 0.3s;">
-                    <div class="project-details">
-                        <div class="project-header">
-                            <h3>Result Management System</h3>
-                            <span class="project-tag tag-primary"><i class="fas fa-graduation-cap"></i> Portal</span>
-                        </div>
-                        <p class="project-desc">A secure, role-based single-page application for teachers and admins to manage student examination marks with strict access control.</p>
-                        <div class="tech-stack">
-                            <span>HTML5</span>
-                            <span>Vanilla JS</span>
-                            <span>Firebase</span>
-                        </div>
-                        <a href="marks.html" class="repo-link important-link">Open Portal <i class="fas fa-external-link-alt"></i></a>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -274,7 +276,7 @@
             <h2 class="section-title">Strategic Skill Development Path</h2>
             <div class="skills-roadmap-grid">
                 <div class="skill-path fade-in">
-                    <h3>🌐 Networking & Infrastructure</h3>
+                    <h3><i class="fas fa-network-wired" aria-hidden="true"></i> Networking & Infrastructure</h3>
                     <ul>
                         <li><strong>Building On:</strong> Practical experience from local company internships</li>
                         <li><strong>Next Steps:</strong> CCNA Certification, Network Security Fundamentals</li>
@@ -283,7 +285,7 @@
                 </div>
 
                 <div class="skill-path fade-in">
-                    <h3>🛡️ Cyber Security</h3>
+                    <h3><i class="fas fa-shield-halved" aria-hidden="true"></i> Cyber Security</h3>
                     <ul>
                         <li><strong>Foundation:</strong> IT security principles from degree program</li>
                         <li><strong>Developing:</strong> CompTIA Security+, Ethical Hacking Fundamentals</li>
@@ -292,7 +294,7 @@
                 </div>
 
                 <div class="skill-path fade-in">
-                    <h3>💻 Advanced Programming</h3>
+                    <h3><i class="fas fa-code" aria-hidden="true"></i> Advanced Programming</h3>
                     <ul>
                         <li><strong>Current Strength:</strong> Django, Python, Full-Stack Development</li>
                         <li><strong>Expanding:</strong> API Development, Microservices Architecture</li>
@@ -365,9 +367,14 @@
     <!-- Trending Tech News Section (Moved to Bottom) -->
     <section id="news" class="section news-section">
         <div class="container">
-            <h2 class="section-title">Trending Tech News</h2>
+            <div class="news-heading">
+                <div>
+                    <h2 class="section-title">Tech Briefing</h2>
+                    <p class="news-intro">A few recent stories in technology and research.</p>
+                </div>
+                <span class="news-updated"><i class="far fa-clock" aria-hidden="true"></i> Updated regularly</span>
+            </div>
             <div id="news-grid" class="news-grid">
-                <!-- Skeleton Loading States -->
                 <div class="news-skeleton"></div>
                 <div class="news-skeleton"></div>
                 <div class="news-skeleton"></div>

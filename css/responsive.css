@@ -1,5 +1,6 @@
 
 /* Responsive Styles */
+@media (max-width: 1024px) {
     .hero-grid {
         grid-template-columns: 1fr;
         text-align: center;
@@ -7,12 +8,12 @@
     }
 
     .hero-content {
-        order: 2;
+        order: 1;
         margin-bottom: 0;
     }
 
     .hero-image-container {
-        order: 1;
+        order: 2;
         max-width: 320px;
         margin: 0 auto;
     }
